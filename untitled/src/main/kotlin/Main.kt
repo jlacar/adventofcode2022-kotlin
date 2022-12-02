@@ -4,7 +4,7 @@ fun main(args: Array<String>) {
     val notYetImplemented = { _: List<String> -> "TBD" }
 
     solve(1, { input -> day1Part1(input) }, { input -> day1Part2(input) }, "Day1-sample.txt", "Day1.txt")
-    solve(2, notYetImplemented, notYetImplemented, "Day2-sample.txt", "Day2.txt")
+    solve(2, { input -> day2Part1(input) }, { input -> day2Part2(input) }, "Day2-sample.txt", "Day2.txt")
     solve(3, notYetImplemented, notYetImplemented, "Day3-sample.txt", "Day3.txt")
 }
 

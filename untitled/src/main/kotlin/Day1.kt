@@ -18,3 +18,12 @@ private fun calories(input: List<String>, n: Int): String {
     maxCals.sortDescending()
     return maxCals.subList(0, n).sum().toString()
 }
+
+
+fun day3Part1(input: List<String>): String {
+    return "Not implemented"
+}
+
+fun day3Part2(input: List<String>): String {
+    return "Not implemented"
+}
