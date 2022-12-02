@@ -27,7 +27,7 @@ dif  -1 -2  1 -1  2  1     3 - scissors
 +3%3  2  1  1  2  2  1
       L  W  W  L  L  W
  */
-private fun result(you: Int, opp: Int) = ((you - opp) + 3) % 3
+private fun result(you: Int, opp: Int) = (you - opp + 3) % 3
 
 private const val DRAW = 0
 private const val WIN = 1
