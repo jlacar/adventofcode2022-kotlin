@@ -3,9 +3,13 @@ typealias Solution = (List<String>) -> String
 fun main(args: Array<String>) {
     val notYetImplemented = { _: List<String> -> "TBD" }
 
-    solve(1, { input -> day1Part1(input) }, { input -> day1Part2(input) }, "Day1-sample.txt", "Day1.txt")
-    solve(2, { input -> day2Part1(input) }, { input -> day2Part2(input) }, "Day2-sample.txt", "Day2.txt")
+    solve(1, { day1Part1(it) }, { day1Part2(it) }, "Day1-sample.txt", "Day1.txt")
+    solve(2, { day2Part1(it) }, { day2Part2(it) }, "Day2-sample.txt", "Day2.txt")
     solve(3, notYetImplemented, notYetImplemented, "Day3-sample.txt", "Day3.txt")
+    solve(4, notYetImplemented, notYetImplemented /*, "Day4-sample.txt", "Day4.txt" */)
+    solve(5, notYetImplemented, notYetImplemented /*, "Day5-sample.txt", "Day5.txt" */)
+    solve(6, notYetImplemented, notYetImplemented /*, "Day6-sample.txt", "Day6.txt" */)
+    solve(7, notYetImplemented, notYetImplemented /*, "Day7-sample.txt", "Day7.txt" */)
 }
 
 private fun solve(n: Int, part1: Solution, part2: Solution, vararg inputFiles: String) {
