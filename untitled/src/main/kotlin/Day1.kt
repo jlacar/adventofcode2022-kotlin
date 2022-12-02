@@ -1,14 +1,10 @@
 import java.lang.Integer.max
 
-fun day1Part1(input: List<String>): Int {
-    return calories(input, 1)
-}
+fun day1Part1(input: List<String>) = calories(input, 1)
 
-fun day1Part2(input: List<String>): Int {
-    return calories(input, 3)
-}
+fun day1Part2(input: List<String>) = calories(input, 3)
 
-private fun calories(input: List<String>, n: Int): Int {
+private fun calories(input: List<String>, n: Int): String {
     val cals: MutableList<Int> = ArrayList<Int>()
     val maxCals: MutableList<Int> = ArrayList<Int>()
     input.forEach { l ->
@@ -20,5 +16,5 @@ private fun calories(input: List<String>, n: Int): Int {
         }
     }
     maxCals.sortDescending()
-    return maxCals.subList(0, n).sum()
+    return maxCals.subList(0, n).sum().toString()
 }
