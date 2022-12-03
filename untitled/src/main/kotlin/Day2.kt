@@ -1,16 +1,16 @@
-fun day2Part1(input: List<String>) = input.sumOf { rpsScore(it) }.toString()
+fun day2Part1(input: List<String>) = input.sumOf { rpsScore(it) }
 
 fun rpsScore(round: String): Int {
     val (opponentMove, yourMove) = round.split(" ")
     return roundScore(rpsPoint(yourMove), rpsPoint(opponentMove))
 }
 
-fun day2Part2(input: List<String>) = input.sumOf { rpsScore2(it) }.toString()
+fun day2Part2(input: List<String>) = input.sumOf { rpsStrategicScore(it) }
 
-fun rpsScore2(round: String): Int {
+fun rpsStrategicScore(round: String): Int {
     val (opponentMove, strategy) = round.split(" ")
     val oppPt = rpsPoint(opponentMove)
-    val youPt = strategicPoint(oppPt, scoreWanted(strategy))
+    val youPt = strategicPoint(oppPt, resultWanted(strategy))
     return roundScore(youPt, oppPt)
 }
 
@@ -36,14 +36,14 @@ private const val LOSE = 2
 private val defeat = arrayOf(0, 2, 3, 1)
 private val loseTo = arrayOf(0, 3, 1, 2)
 
-fun strategicPoint(opponent: Int, scoreWanted: Int) =
-    when (scoreWanted) {
+fun strategicPoint(opponent: Int, resultWanted: Int) =
+    when (resultWanted) {
         DRAW -> opponent
         WIN -> defeat[opponent]
         else -> loseTo[opponent]
     }
 
-private fun scoreWanted(strategy: String) =
+private fun resultWanted(strategy: String) =
     when (strategy) {
         "X" -> LOSE
         "Y" -> DRAW

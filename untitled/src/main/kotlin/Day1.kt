@@ -2,17 +2,17 @@ fun day1Part1(input: List<String>) = calories(input, 1)
 
 fun day1Part2(input: List<String>) = calories(input, 3)
 
-private fun calories(input: List<String>, n: Int): String {
-    val cals: MutableList<Int> = ArrayList<Int>()
-    val maxCals: MutableList<Int> = ArrayList<Int>()
-    input.forEach { l ->
-        if (l.isEmpty()) {
+private fun calories(input: List<String>, n: Int): Int {
+    val cals: MutableList<Int> = mutableListOf()
+    val maxCals: MutableList<Int> = mutableListOf()
+    input.forEach { line ->
+        if (line.isNotBlank()) {
+            cals.add(line.toInt())
+        } else {
             maxCals.add(cals.sumOf { it })
             cals.clear()
-        } else {
-            cals.add(l.toInt())
         }
     }
     maxCals.sortDescending()
-    return maxCals.subList(0, n).sum().toString()
+    return maxCals.subList(0, n).sum()
 }
