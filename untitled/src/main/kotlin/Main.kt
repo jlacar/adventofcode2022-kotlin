@@ -1,6 +1,6 @@
 typealias Solution = (List<String>) -> Int
 
-fun main(args: Array<String>) {
+fun main() {
     val notYetImplemented = { _: List<String> -> -1 }
 
     solve(1, { day1Part1(it) }, { day1Part2(it) }, "Day1-sample.txt|24000|45000", "Day1.txt|71502|208191")
