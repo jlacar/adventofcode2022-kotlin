@@ -35,16 +35,16 @@ private fun solve(n: Int, part1: Solution, part2: Solution, vararg params: Strin
         val (fileName, expected1, expected2) = param.split("|")
         val input: List<String> = InputReader(fileName).lines()
 
-        println("Day $n ($fileName)")
-        result(1, part1(input), expected1.toInt())
-        result(2, part2(input), expected2.toInt())
+        println("\nDay $n ($fileName)")
+        report(1, part1(input), expected1.toInt())
+        report(2, part2(input), expected2.toInt())
     }
 }
 
-private fun result(n: Int, actual: Int, expected: Int) =
-    println(" Part $n: ${mark(expected, actual)}")
+private fun report(n: Int, actual: Int, expected: Int) =
+    println("\tPart $n: ${status(expected, actual)}")
 
-private fun mark(expected: Int, actual: Int) = when (actual) {
+private fun status(expected: Int, actual: Int) = when (actual) {
     -1 -> "❗(pending...)"
     0 -> "⭐(working on it...)"
     else -> if (actual == expected) "$actual ✅"
