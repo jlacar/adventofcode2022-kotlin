@@ -1,5 +1,3 @@
-import javax.swing.text.MutableAttributeSet
-
 fun day3Part1(input: List<String>) = input.sumOf { ruckPriority(it) }
 
 fun ruckPriority(line: String): Int {
@@ -7,22 +5,13 @@ fun ruckPriority(line: String): Int {
     return priority(commonItemIn(compartment1, compartment2))
 }
 
-fun day3Part2(input: List<String>) = sumOfBadgePriority(input)
+fun day3Part2(input: List<String>) = input
+    .chunked(3).sumOf { groupBadgePriority(it) }
 
-fun sumOfBadgePriority(input: List<String>): Int {
-    val group: MutableList<Set<Char>> = mutableListOf()
-    val priorities: MutableList<Int> = mutableListOf()
-    input.forEach { items ->
-        group.add(items.toSet())
-        if (group.size == 3) {
-            priorities.add(badgePriorityOf(group))
-            group.clear()
-        }
-    }
-    return priorities.sum()
-}
+fun groupBadgePriority(input: List<String>) =
+    badgePriority( input.map { it.toSet() } )
 
-fun badgePriorityOf(group: MutableList<Set<Char>>): Int {
+fun badgePriority(group: List<Set<Char>>): Int {
     val (elf1, elf2, elf3) = group
     return priority(elf1.intersect(elf2).intersect(elf3).first())
 }
