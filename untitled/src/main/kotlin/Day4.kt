@@ -22,11 +22,10 @@ class Section(specifier: String) {
     }
 
     fun contains(other: Section) =
-        range.first <= other.range.first && range.last >= other.range.last
+        range.contains(other.range.first) && range.contains(other.range.last)
 
     fun overlaps(other: Section) =
-         this.range.first in other.range || this.range.last in other.range
-      || other.range.first in this.range || other.range.last in this.range
+        range.first <= other.range.last && range.last >= other.range.first
 
     override fun toString(): String = range.toString()
 }
