@@ -22,7 +22,7 @@ class Section(specifier: String) {
     }
 
     fun contains(other: Section) =
-        range.contains(other.range.first) && range.contains(other.range.last)
+        other.range.first in range && other.range.last in range
 
     fun overlaps(other: Section) =
         range.first <= other.range.last && range.last >= other.range.first
