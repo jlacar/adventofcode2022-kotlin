@@ -13,6 +13,7 @@ private fun calories(input: List<String>, n: Int): Int {
             cals.clear()
         }
     }
+    maxCals.add(cals.sumOf { it })
     maxCals.sortDescending()
     return maxCals.subList(0, n).sum()
 }
