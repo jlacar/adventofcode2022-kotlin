@@ -1,3 +1,32 @@
-fun day4Part1(input: List<String>) = 6
+fun day4Part1(input: List<String>) = input.count { hasFullContainment(it) }
 
-fun day4Part2(input: List<String>) = SolutionStatus.PENDING
+fun hasFullContainment(it: String): Boolean {
+    val (assignment1, assignment2) = it.split(",")
+    val section1 = Section(assignment1) //.also(::println)
+    val section2 = Section(assignment2) //.also(::println)
+    return section1.contains(section2) || section2.contains(section1)
+}
+
+fun day4Part2(input: List<String>) = input.count { hasOverlap(it) }
+
+fun hasOverlap(it: String): Boolean {
+    val (assignment1, assignment2) = it.split(",")
+    return Section(assignment1).overlaps(Section(assignment2))
+}
+
+class Section(specifier: String) {
+    private val range: IntRange
+    init {
+        val (from, to) = specifier.split("-")
+        range = from.toInt()..to.toInt()
+    }
+
+    fun contains(other: Section) =
+        range.first <= other.range.first && range.last >= other.range.last
+
+    fun overlaps(other: Section) =
+         this.range.first in other.range || this.range.last in other.range
+      || other.range.first in this.range || other.range.last in this.range
+
+    override fun toString(): String = range.toString()
+}

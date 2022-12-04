@@ -12,7 +12,7 @@ fun main() {
     solve(1, { day1Part1(it) }, { day1Part2(it) }, "Day1-sample.txt|24000|45000", "Day1.txt|71502|208191")
     solve(2, { day2Part1(it) }, { day2Part2(it) }, "Day2-sample.txt|15|12", "Day2.txt|14264|12382")
     solve(3, { day3Part1(it) }, { day3Part2(it) }, "Day3-sample.txt|157|70", "Day3.txt|7446|2646")
-    solve(4, solving, pending, "Day4-sample.txt|1|1" /*, "Day4.txt|1|1" */)
+    solve(4, { day4Part1(it) }, { day4Part2(it) }, "Day4-sample.txt|2|4", "Day4.txt|471|888" )
     solve(5, pending, pending /*, "Day5-sample.txt|1|1"*//*, "Day5.txt|1|1" */)
 //    solve(6, pending, pending /*, "Day6-sample.txt|1|1"*//*, "Day6.txt|1|1" */)
 //    solve(7, pending, pending /*, "Day7-sample.txt|1|1"*//*, "Day7.txt|1|1" */)
