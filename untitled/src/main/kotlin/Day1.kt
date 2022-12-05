@@ -1,6 +1,6 @@
-fun day1Part1(input: List<String>) = calories(input, 1)
+fun day1Part1(input: List<String>) = calories(input, 1).toString()
 
-fun day1Part2(input: List<String>) = calories(input, 3)
+fun day1Part2(input: List<String>) = calories(input, 3).toString()
 
 private fun calories(input: List<String>, n: Int): Int {
     val cals: MutableList<Int> = mutableListOf()

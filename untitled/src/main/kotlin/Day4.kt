@@ -1,4 +1,5 @@
 fun day4Part1(input: List<String>) = input.count { hasFullContainment(it) }
+    .toString()
 
 fun hasFullContainment(it: String): Boolean {
     val (assignment1, assignment2) = it.split(",")
@@ -8,6 +9,7 @@ fun hasFullContainment(it: String): Boolean {
 }
 
 fun day4Part2(input: List<String>) = input.count { hasOverlap(it) }
+    .toString()
 
 fun hasOverlap(it: String): Boolean {
     val (assignment1, assignment2) = it.split(",")

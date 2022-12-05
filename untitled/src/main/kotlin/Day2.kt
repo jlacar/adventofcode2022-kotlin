@@ -1,4 +1,5 @@
 fun day2Part1(input: List<String>) = input.sumOf { rpsScore(it) }
+    .toString()
 
 fun rpsScore(round: String): Int {
     val (opponentMove, yourMove) = round.split(" ")
@@ -6,6 +7,7 @@ fun rpsScore(round: String): Int {
 }
 
 fun day2Part2(input: List<String>) = input.sumOf { rpsStrategicScore(it) }
+    .toString()
 
 fun rpsStrategicScore(round: String): Int {
     val (opponentMove, strategy) = round.split(" ")

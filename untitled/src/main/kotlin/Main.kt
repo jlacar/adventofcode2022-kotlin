@@ -1,19 +1,18 @@
-typealias Solution = (List<String>) -> Int
+typealias Solution = (List<String>) -> String
 
-object SolutionStatus {
-    const val PENDING = -1
-    const val SOLVING = 0
+enum class SolutionStatus {
+    PENDING, SOLVING
 }
 
 fun main() {
-    val pending = { _ : Any -> SolutionStatus.PENDING }
-    val solving = { _ : Any -> SolutionStatus.SOLVING }
+    val pending = { _ : Any -> SolutionStatus.PENDING.toString() }
+    val solving = { _ : Any -> SolutionStatus.SOLVING.toString() }
 
     solve(1, { day1Part1(it) }, { day1Part2(it) }, "Day1-sample.txt|24000|45000", "Day1.txt|71502|208191")
     solve(2, { day2Part1(it) }, { day2Part2(it) }, "Day2-sample.txt|15|12", "Day2.txt|14264|12382")
     solve(3, { day3Part1(it) }, { day3Part2(it) }, "Day3-sample.txt|157|70", "Day3.txt|7446|2646")
     solve(4, { day4Part1(it) }, { day4Part2(it) }, "Day4-sample.txt|2|4", "Day4.txt|471|888" )
-    solve(5, pending, pending , "Day5-sample.txt|1|1"/*, "Day5.txt|1|1" */)
+    solve(5, { day5Part1(it) }, pending , "Day5-sample.txt|CMZ|1"/*, "Day5.txt|1|1" */)
 //    solve(6, pending, pending /*, "Day6-sample.txt|1|1"*//*, "Day6.txt|1|1" */)
 //    solve(7, pending, pending /*, "Day7-sample.txt|1|1"*//*, "Day7.txt|1|1" */)
 //    solve(8, pending, pending /*, "Day8-sample.txt|1|1"*//*, "Day8.txt|1|1" */)
@@ -42,17 +41,17 @@ private fun solve(n: Int, part1: Solution, part2: Solution, vararg params: Strin
         val input: List<String> = InputReader(fileName).lines()
 
         println("\nDay $n ($fileName)")
-        report(1, part1(input), expected1.toInt())
-        report(2, part2(input), expected2.toInt())
+        report(1, part1(input), expected1)
+        report(2, part2(input), expected2)
     }
 }
 
-private fun report(n: Int, actual: Int, expected: Int) =
+private fun report(n: Int, actual: String, expected: String) =
     println("\tPart $n: ${status(expected, actual)}")
 
-private fun status(expected: Int, actual: Int) = when (actual) {
-    SolutionStatus.PENDING -> "❗ (pending...)"
-    SolutionStatus.SOLVING -> "⭐ (working on it...)"
+private fun status(expected: String, actual: String) = when (actual) {
+    SolutionStatus.PENDING.toString() -> "❗ (pending...)"
+    SolutionStatus.SOLVING.toString() -> "⭐ (working on it...)"
     else -> if (actual == expected) "$actual ✅"
             else "❌ expected [$expected] but got [$actual]"
 }
