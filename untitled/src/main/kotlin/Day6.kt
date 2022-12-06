@@ -24,10 +24,9 @@ fun main() {
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw",
     )
 
-    for (s in testData1) {
-        println(day6Part1(s))
-    }
-    for (s in testData2) {
-        println(day6Part2(s))
-    }
+    println("Part 1 test")
+    testData1.forEach { day6Part1(it).also(::println) }
+
+    println("Part 2 test")
+    testData2.forEach { day6Part2(it).also(::println) }
 }
