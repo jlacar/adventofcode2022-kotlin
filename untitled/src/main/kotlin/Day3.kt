@@ -28,4 +28,5 @@ fun halve(line: String): Pair<String, String> {
 
 private const val PRIORITY_lower_a = 1;
 private const val PRIORITY_UPPER_A = 27;
-fun priority(ch: Char) = ch.lowercaseChar() - 'a' + if (ch.isLowerCase()) PRIORITY_lower_a else PRIORITY_UPPER_A
+fun priority(ch: Char) = ch.lowercaseChar() - 'a' +
+    if (ch.isLowerCase()) PRIORITY_lower_a else PRIORITY_UPPER_A
