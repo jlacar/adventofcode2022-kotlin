@@ -9,24 +9,20 @@ fun isMarker(packet: String) = packet.toSet().size == packet.length
 
 
 fun main() {
-    val testData1: List<String> = listOf(
+    println("Part 1 test")
+    listOf(
         "bvwbjplbgvbhsrlpgdmjqwftvncz",
         "nppdvjthqldpwncqszvftbrmjlhg",
         "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg",
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw",
-    )
+    ).forEach { day6Part1(it).also(::println) }
 
-    val testData2 = listOf(
+    println("Part 2 test")
+    listOf(
         "mjqjpqmgbljsphdztnvjfqwrcgsmlb",
         "bvwbjplbgvbhsrlpgdmjqwftvncz",
         "nppdvjthqldpwncqszvftbrmjlhg",
         "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg",
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw",
-    )
-
-    println("Part 1 test")
-    testData1.forEach { day6Part1(it).also(::println) }
-
-    println("Part 2 test")
-    testData2.forEach { day6Part2(it).also(::println) }
+    ).forEach { day6Part2(it).also(::println) }
 }
