@@ -7,10 +7,6 @@ val PendingResult = object : Result("?", "?") {
     override fun report() = "⭐ (working on it...)"  // "❗ (pending...)"  //
 }
 
-enum class SolutionStatus {
-    PENDING, SOLVING
-}
-
 interface Solution {
     val name: String get() = "Pending solution"
     fun part1() : Result
@@ -30,8 +26,8 @@ fun main() {
     solve(Day4("Day4-sample.txt", 2, 4))
     solve(Day4("Day4.txt", 471, 888))
 
-    solve(Day5("Day5-sample.txt", "CMZ", "?"))
-    solve(Day5("Day5.txt", "?", "?"))
+    solve(Day5("Day5-sample.txt", "CMZ", "MCD"))
+    solve(Day5("Day5.txt", "MQTPGLLDN", "LVZPSTTCZ"))
 
     solve(Day6("Day6.txt", 1093, 3534))
 
