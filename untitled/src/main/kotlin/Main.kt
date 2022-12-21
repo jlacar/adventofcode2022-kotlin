@@ -4,7 +4,7 @@ open class Result(private val expected: Any, private val actual: Any) {
 }
 
 val PendingResult = object : Result("?", "?") {
-    override fun report() = "❗ (pending...)"
+    override fun report() = "⭐ (working on it...)"  // "❗ (pending...)"  //
 }
 
 enum class SolutionStatus {
@@ -30,9 +30,11 @@ fun main() {
     solve(Day4("Day4-sample.txt", 2, 4))
     solve(Day4("Day4.txt", 471, 888))
 
-//    solve(4, { day4Part1(it) }, { day4Part2(it) }, "Day4-sample.txt|2|4", "Day4.txt|471|888" )
-//    solve(5, { day5Part1(it) }, pending , "Day5-sample.txt|CMZ|?"/*, "Day5.txt|?|?" */)
-//    solve(6, { day6Part1(it.first()) }, { day6Part2(it.first()) }, "Day6.txt|1093|3534" )
+    solve(Day5("Day5-sample.txt", "CMZ", "?"))
+    solve(Day5("Day5.txt", "?", "?"))
+
+    solve(Day6("Day6.txt", 1093, 3534))
+
 //    solve(7, pending, pending /*, "Day7-sample.txt|?|?"*//*, "Day7.txt|?|?" */)
 //    solve(8, pending, pending /*, "Day8-sample.txt|?|?"*//*, "Day8.txt|?|?" */)
 //    solve(9, pending, pending /*, "Day8-sample.txt|?|?"*//*, "Day9.txt|?|?" */)
@@ -60,7 +62,6 @@ fun solve(solution: Solution) {
     println("\tPart 2: ${solution.part2().report()}")
 }
 
-//    SolutionStatus.SOLVING.toString(), "?" -> "⭐ (working on it...)"
 
 class InputReader(private val fileName: String) {
     fun lines() = this::class.java.getResourceAsStream(fileName).bufferedReader().readLines()
