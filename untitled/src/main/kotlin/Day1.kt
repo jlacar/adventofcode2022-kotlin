@@ -1,8 +1,9 @@
 class Day1(
-    override val fileName: String,
+    private val fileName: String,
     private val expected1: Int,
-    private val expected2: Int) : Solution
-{
+    private val expected2: Int) : Solution {
+    override val name: String get() = "Day 1 ($fileName)"
+
     private val input = InputReader(fileName).lines()
     override fun part1() = Result(expected1, calories(input, 1))
     override fun part2() = Result(expected2, calories(input, 3))

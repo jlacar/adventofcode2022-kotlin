@@ -12,22 +12,21 @@ enum class SolutionStatus {
 }
 
 interface Solution {
-    val fileName: String
+    val name: String get() = "Pending solution"
     fun part1() : Result
     fun part2() : Result
 }
 
 fun main() {
-    solveDay(1, Day1("Day1-sample.txt", 24000, 45000))
-    solveDay(1, Day1("Day1.txt", 71502, 208191))
+    solve(Day1("Day1-sample.txt", 24000, 45000))
+    solve(Day1("Day1.txt", 71502, 208191))
 
-    solveDay(2, Day2("Day2-sample.txt", 15, 12))
-    solveDay(2, Day2("Day2.txt", 14264, 12382))
+    solve(Day2("Day2-sample.txt", 15, 12))
+    solve(Day2("Day2.txt", 14264, 12382))
 
-    solveDay(3, Day3("Day3-sample.txt", 157, 70))
-    solveDay(3, Day3("Day3.txt", 7446, 2646))
+    solve(Day3("Day3-sample.txt", 157, 70))
+    solve(Day3("Day3.txt", 7446, 2646))
 
-//    solve(3, { day3Part1(it) }, { day3Part2(it) }, "Day3-sample.txt|157|70", "Day3.txt|7446|2646")
 //    solve(4, { day4Part1(it) }, { day4Part2(it) }, "Day4-sample.txt|2|4", "Day4.txt|471|888" )
 //    solve(5, { day5Part1(it) }, pending , "Day5-sample.txt|CMZ|?"/*, "Day5.txt|?|?" */)
 //    solve(6, { day6Part1(it.first()) }, { day6Part2(it.first()) }, "Day6.txt|1093|3534" )
@@ -52,8 +51,8 @@ fun main() {
 //    solve(25, pending, pending /*, "Day25-sample.txt|?|?"*//*, "Day25.txt|?|?" */)
 }
 
-fun solveDay(n: Int, solution: Solution) {
-    println("\nDay $n (${solution.fileName})")
+fun solve(solution: Solution) {
+    println("\n${solution.name}")
     println("\tPart 1: ${solution.part1().report()}")
     println("\tPart 2: ${solution.part2().report()}")
 }
