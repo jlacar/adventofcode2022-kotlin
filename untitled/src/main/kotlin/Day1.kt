@@ -1,4 +1,14 @@
-fun day1Part1(input: List<String>) = calories(input, 1).toString()
+class Day1(
+    override val fileName: String,
+    private val expected1: Int,
+    private val expected2: Int) : Solution
+{
+    private val input = InputReader(fileName).lines()
+    override fun part1() = Result(expected1, calories(input, 1))
+    override fun part2() = Result(expected2, calories(input, 3))
+}
+
+fun day1Part1(input: List<String>) = calories(input, 1)
 
 fun day1Part2(input: List<String>) = calories(input, 3).toString()
 

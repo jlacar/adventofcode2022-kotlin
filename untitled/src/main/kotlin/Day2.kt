@@ -1,13 +1,17 @@
-fun day2Part1(input: List<String>) = input.sumOf { rpsScore(it) }
-    .toString()
+class Day2(
+    override val fileName: String,
+    private val expected1: Int,
+    private val expected2: Int) : Solution {
+
+    private val input = InputReader(fileName).lines()
+    override fun part1() = Result(expected1, input.sumOf { rpsScore(it) })
+    override fun part2() = Result(expected2, input.sumOf { rpsStrategicScore(it) })
+}
 
 fun rpsScore(round: String): Int {
     val (opponentMove, yourMove) = round.split(" ")
     return roundScore(rpsPoint(yourMove), rpsPoint(opponentMove))
 }
-
-fun day2Part2(input: List<String>) = input.sumOf { rpsStrategicScore(it) }
-    .toString()
 
 fun rpsStrategicScore(round: String): Int {
     val (opponentMove, strategy) = round.split(" ")
