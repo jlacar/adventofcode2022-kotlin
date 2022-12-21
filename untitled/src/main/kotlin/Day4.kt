@@ -1,5 +1,14 @@
-fun day4Part1(input: List<String>) = input.count { hasFullContainment(it) }
-    .toString()
+class Day4(
+    private val fileName: String,
+    private val expected1: Any,
+    private val expected2: Any) : Solution {
+    override val name: String get() = "Day 4 ($fileName)"
+
+    private val input = InputReader(fileName).lines()
+    override fun part1() = Result(expected1, input.count { hasFullContainment(it) })
+    override fun part2() = Result(expected2, input.count { hasOverlap(it) })
+}
+
 
 fun hasFullContainment(it: String): Boolean {
     val (assignment1, assignment2) = it.split(",")
@@ -7,9 +16,6 @@ fun hasFullContainment(it: String): Boolean {
     val section2 = Section(assignment2) //.also(::println)
     return section1.contains(section2) || section2.contains(section1)
 }
-
-fun day4Part2(input: List<String>) = input.count { hasOverlap(it) }
-    .toString()
 
 fun hasOverlap(it: String): Boolean {
     val (assignment1, assignment2) = it.split(",")

@@ -27,6 +27,9 @@ fun main() {
     solve(Day3("Day3-sample.txt", 157, 70))
     solve(Day3("Day3.txt", 7446, 2646))
 
+    solve(Day4("Day4-sample.txt", 2, 4))
+    solve(Day4("Day4.txt", 471, 888))
+
 //    solve(4, { day4Part1(it) }, { day4Part2(it) }, "Day4-sample.txt|2|4", "Day4.txt|471|888" )
 //    solve(5, { day5Part1(it) }, pending , "Day5-sample.txt|CMZ|?"/*, "Day5.txt|?|?" */)
 //    solve(6, { day6Part1(it.first()) }, { day6Part2(it.first()) }, "Day6.txt|1093|3534" )
