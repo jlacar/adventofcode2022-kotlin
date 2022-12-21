@@ -24,8 +24,9 @@ fun main() {
     solveDay(2, Day2("Day2-sample.txt", 15, 12))
     solveDay(2, Day2("Day2.txt", 14264, 12382))
 
-//    solve(1, { day1Part1(it) }, { day1Part2(it) }, "Day1-sample.txt|24000|45000", "Day1.txt|71502|208191")
-//    solve(2, { day2Part1(it) }, { day2Part2(it) }, "Day2-sample.txt|15|12", "Day2.txt|14264|12382")
+    solveDay(3, Day3("Day3-sample.txt", 157, 70))
+    solveDay(3, Day3("Day3.txt", 7446, 2646))
+
 //    solve(3, { day3Part1(it) }, { day3Part2(it) }, "Day3-sample.txt|157|70", "Day3.txt|7446|2646")
 //    solve(4, { day4Part1(it) }, { day4Part2(it) }, "Day4-sample.txt|2|4", "Day4.txt|471|888" )
 //    solve(5, { day5Part1(it) }, pending , "Day5-sample.txt|CMZ|?"/*, "Day5.txt|?|?" */)
@@ -57,11 +58,7 @@ fun solveDay(n: Int, solution: Solution) {
     println("\tPart 2: ${solution.part2().report()}")
 }
 
-private fun status(expected: String, actual: String) = when (actual) {
-    SolutionStatus.SOLVING.toString(), "?" -> "⭐ (working on it...)"
-    else -> if (actual == expected) "$actual ✅"
-            else "❌ expected [$expected] but got [$actual]"
-}
+//    SolutionStatus.SOLVING.toString(), "?" -> "⭐ (working on it...)"
 
 class InputReader(private val fileName: String) {
     fun lines() = this::class.java.getResourceAsStream(fileName).bufferedReader().readLines()

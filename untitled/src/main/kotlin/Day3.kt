@@ -1,14 +1,17 @@
-fun day3Part1(input: List<String>) = input.sumOf { ruckPriority(it) }
-    .toString()
+class Day3(
+    override val fileName: String,
+    private val expected1: Any,
+    private val expected2: Any) : Solution
+{
+    private val input = InputReader(fileName).lines()
+    override fun part1() = Result(expected1, input.sumOf { ruckPriority(it) })
+    override fun part2() = Result(expected2, input.chunked(3).sumOf { groupBadgePriority(it) })
+}
 
 fun ruckPriority(line: String): Int {
     val (compartment1, compartment2) = halve(line)
     return priority(commonItemIn(compartment1, compartment2))
 }
-
-fun day3Part2(input: List<String>) = input
-    .chunked(3).sumOf { groupBadgePriority(it) }
-    .toString()
 
 fun groupBadgePriority(input: List<String>) =
     badgePriority( input.map { it.toSet() } )
@@ -26,7 +29,7 @@ fun halve(line: String): Pair<String, String> {
     return Pair(line.substring(0, half), line.substring(half))
 }
 
-private const val PRIORITY_lower_a = 1;
-private const val PRIORITY_UPPER_A = 27;
+private const val lowercase_a_priority = 1;
+private const val UPPERCASE_A_priority = 27;
 fun priority(ch: Char) = ch.lowercaseChar() - 'a' +
-    if (ch.isLowerCase()) PRIORITY_lower_a else PRIORITY_UPPER_A
+    if (ch.isLowerCase()) lowercase_a_priority else UPPERCASE_A_priority
