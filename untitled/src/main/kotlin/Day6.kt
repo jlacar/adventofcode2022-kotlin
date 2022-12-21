@@ -21,7 +21,8 @@ fun main() {
         "nppdvjthqldpwncqszvftbrmjlhg" to 6,
         "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" to 10,
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" to 11,
-    ).forEach { (k, v) -> println("\tPart 1: ${Result(v, solve(k, 4)).report()}") }
+    ).forEach { (input, expected) -> Result(expected, solve(input, 4))
+        .also { println("\t[$input] : ${it.report()}") }}
 
     println("Part 2 test")
     mapOf(
@@ -30,5 +31,6 @@ fun main() {
         "nppdvjthqldpwncqszvftbrmjlhg" to 23,
         "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" to 29,
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" to 26,
-    ).forEach { (k, v) -> println("\tPart 2: ${Result(v, solve(k, 14)).report()}") }
+    ).forEach { (input, expected) -> Result(expected, solve(input, 14))
+        .also { println("\t[$input] : ${it.report()}") }}
 }
