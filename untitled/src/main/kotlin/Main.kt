@@ -16,20 +16,30 @@ interface Solution {
 fun main() {
     solve(Day1("Day1-sample.txt", 24000, 45000))
     solve(Day1("Day1.txt", 71502, 208191))
+    solve(Day1("Day1-alt.txt", 69836, 207968))
 
     solve(Day2("Day2-sample.txt", 15, 12))
     solve(Day2("Day2.txt", 14264, 12382))
+    solve(Day2("Day2-alt.txt", 13268, 15508))
 
     solve(Day3("Day3-sample.txt", 157, 70))
     solve(Day3("Day3.txt", 7446, 2646))
+    solve(Day3("Day3-alt.txt", 8349, 2681))
 
     solve(Day4("Day4-sample.txt", 2, 4))
     solve(Day4("Day4.txt", 471, 888))
+    solve(Day4("Day4-alt.txt", 507, 897))
 
     solve(Day5("Day5-sample.txt", "CMZ", "MCD"))
     solve(Day5("Day5.txt", "MQTPGLLDN", "LVZPSTTCZ"))
+    solve(Day5("Day5-alt.txt", "HBTMTBSDC", "PQTJRSHWS"))
 
     solve(Day6("Day6.txt", 1093, 3534))
+    solve(Day6("Day6-alt.txt", 1155, 2789))
+
+    solve(Day7("Day7-sample.txt", 95437, 0))
+    solve(Day7("Day7.txt", 0, 0))
+    solve(Day7("Day7-alt.txt", 0, 0))
 
 //    solve(7, pending, pending /*, "Day7-sample.txt|?|?"*//*, "Day7.txt|?|?" */)
 //    solve(8, pending, pending /*, "Day8-sample.txt|?|?"*//*, "Day8.txt|?|?" */)
