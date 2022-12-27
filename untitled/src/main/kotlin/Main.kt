@@ -41,25 +41,7 @@ fun main() {
     solve(Day7("Day7.txt", 1118405, 12545514))
     solve(Day7("Day7-alt.txt", 1886043, 3842121))
 
-//    solve(7, pending, pending /*, "Day7-sample.txt|?|?"*//*, "Day7.txt|?|?" */)
-//    solve(8, pending, pending /*, "Day8-sample.txt|?|?"*//*, "Day8.txt|?|?" */)
-//    solve(9, pending, pending /*, "Day8-sample.txt|?|?"*//*, "Day9.txt|?|?" */)
-//    solve(10, pending, pending /*, "Day10-sample.txt|?|?"*//*, "Day10.txt|?|?" */)
-//    solve(11, pending, pending /*, "Day11-sample.txt|?|?"*//*, "Day11.txt|?|?" */)
-//    solve(12, pending, pending /*, "Day12-sample.txt|?|?"*//*, "Day12.txt|?|?" */)
-//    solve(13, pending, pending /*, "Day13-sample.txt|?|?"*//*, "Day13.txt|?|?" */)
-//    solve(14, pending, pending /*, "Day14-sample.txt|?|?"*//*, "Day14.txt|?|?" */)
-//    solve(15, pending, pending /*, "Day15-sample.txt|?|?"*//*, "Day15.txt|?|?" */)
-//    solve(16, pending, pending /*, "Day16-sample.txt|?|?"*//*, "Day16.txt|?|?" */)
-//    solve(17, pending, pending /*, "Day17-sample.txt|?|?"*//*, "Day17.txt|?|?" */)
-//    solve(18, pending, pending /*, "Day18-sample.txt|?|?"*//*, "Day18.txt|?|?" */)
-//    solve(19, pending, pending /*, "Day19-sample.txt|?|?"*//*, "Day19.txt|?|?" */)
-//    solve(20, pending, pending /*, "Day20-sample.txt|?|?"*//*, "Day20.txt|?|?" */)
-//    solve(21, pending, pending /*, "Day21-sample.txt|?|?"*//*, "Day21.txt|?|?" */)
-//    solve(22, pending, pending /*, "Day22-sample.txt|?|?"*//*, "Day22.txt|?|?" */)
-//    solve(23, pending, pending /*, "Day23-sample.txt|?|?"*//*, "Day23.txt|?|?" */)
-//    solve(24, pending, pending /*, "Day24-sample.txt|?|?"*//*, "Day24.txt|?|?" */)
-//    solve(25, pending, pending /*, "Day25-sample.txt|?|?"*//*, "Day25.txt|?|?" */)
+    solve(Day8("Day8-sample.txt", 0, 0))
 }
 
 fun solve(solution: Solution) {
