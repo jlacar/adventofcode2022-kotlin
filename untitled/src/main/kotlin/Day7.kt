@@ -1,4 +1,3 @@
-
 class Day7  (
     private val fileName: String,
     private val expected1: Int,
@@ -7,24 +6,25 @@ class Day7  (
     override val name: String get() = "Day 7 ($fileName)"
     private val input = InputReader(fileName).lines()
 
-    override fun part1() = Result(expected1, sumOf100kDirs(input))
+    override fun part1() = Result(expected1, sumOfSmallDirectories(input))
 
-    override fun part2() = Result(expected2, smallestDirSize(input))
+    private fun sumOfSmallDirectories(input: List<String>) = parse(input)
+        .walkDirectories { if (it.size() <= 100_000) it.size() else 0 }
 
-    private fun smallestDirSize(input: List<String>): Int {
+    override fun part2() = Result(expected2, smallestDirectoryToDelete(input))
+
+    private fun smallestDirectoryToDelete(input: List<String>): Int {
         val root = parse(input)
         val spaceNeeded = spaceNeeded(root.size())
         val eligibleSizes: MutableList<Int> = mutableListOf()
 
-        root.walk { (if (it.size() >= spaceNeeded) eligibleSizes.add(it.size()) else 0).let { 0 } }
+        root.walkDirectories { (if (it.size() >= spaceNeeded) eligibleSizes.add(it.size()) else 0).let { 0 } }
 
         return eligibleSizes.min()
     }
 
     private fun spaceNeeded(used: Int) = 30_000_000 - (70_000_000 - used)
 
-    private fun sumOf100kDirs(input: List<String>) = parse(input)
-        .walk { if (it.size() <= 100_000) it.size() else 0 }
 
     private fun parse(input: List<String>): FileAoC7 {
         val root = FileAoC7("/")
@@ -65,7 +65,7 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
     val contents: MutableList<FileAoC7> = mutableListOf()
     fun size(): Int = if (isDirectory) contents.sumOf { it.size() } else bytes
 
-    fun walk(selector: (FileAoC7) -> Int): Int {
-        return selector.invoke(this) + contents.filter { it.isDirectory }.sumOf { it.walk(selector) }
+    fun walkDirectories(selector: (FileAoC7) -> Int): Int {
+        return selector.invoke(this) + contents.filter { it.isDirectory }.sumOf { it.walkDirectories(selector) }
     }
 }
