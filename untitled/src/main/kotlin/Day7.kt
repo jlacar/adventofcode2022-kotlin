@@ -11,10 +11,8 @@ class Day7  (
 
     override fun part2() = PendingResult
 
-    private fun sumOf100kDirs(input: List<String>): Int {
-        val root = parse(input)
-        return root.walk(100_000)
-    }
+    private fun sumOf100kDirs(input: List<String>) = parse(input)
+        .walk { if (it.size() <= 100_000) it.size() else 0 }
 
     private fun parse(input: List<String>): FileAoC7 {
         val root = FileAoC7("/")
@@ -29,7 +27,7 @@ class Day7  (
 
         fun upDir() = if (dirStack.isNotEmpty()) dirStack.pop() else dirStack.push(root).let { root }
 
-        fun chdir(line: String) = dirStack.push(currentDir).let { _ ->
+        fun chdir(line: String) = dirStack.push(currentDir).let {
             currentDir.contents.first { it.name == dirName(line.substring(2)) }
         }
 
@@ -55,7 +53,7 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
     val contents: MutableList<FileAoC7> = mutableListOf()
     fun size(): Int = if (isDirectory) contents.sumOf { it.size() } else bytes
 
-    fun walk(maxSize: Int): Int {
-        return (if (size() <= maxSize) size() else 0) + contents.sumOf { if (it.isDirectory) it.walk(maxSize) else 0 }
+    fun walk(selector: (FileAoC7) -> Int): Int {
+        return selector.invoke(this) + contents.filter { it.isDirectory }.sumOf { it.walk(selector) }
     }
 }
