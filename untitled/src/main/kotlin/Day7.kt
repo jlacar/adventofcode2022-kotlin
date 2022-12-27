@@ -9,7 +9,19 @@ class Day7  (
 
     override fun part1() = Result(expected1, sumOf100kDirs(input))
 
-    override fun part2() = PendingResult
+    override fun part2() = Result(expected2, smallestDirSize(input))
+
+    private fun smallestDirSize(input: List<String>): Int {
+        val root = parse(input)
+        val spaceNeeded = spaceNeeded(root.size())
+        val eligibleSizes: MutableList<Int> = mutableListOf()
+
+        root.walk { (if (it.size() >= spaceNeeded) eligibleSizes.add(it.size()) else 0).let { 0 } }
+
+        return eligibleSizes.min()
+    }
+
+    private fun spaceNeeded(used: Int) = 30_000_000 - (70_000_000 - used)
 
     private fun sumOf100kDirs(input: List<String>) = parse(input)
         .walk { if (it.size() <= 100_000) it.size() else 0 }
