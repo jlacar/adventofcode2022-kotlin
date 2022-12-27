@@ -4,7 +4,7 @@ open class Result(private val expected: Any, private val actual: Any) {
 }
 
 val PendingResult = object : Result("?", "?") {
-    override fun report() = "⭐ (working on it...)"  // "❗ (pending...)"  //
+    override fun report() = "⭐ (working on it…)"  // "❗ (pending…)"  //
 }
 
 interface Solution {
@@ -41,7 +41,7 @@ fun main() {
     solve(Day7("Day7.txt", 1118405, 12545514))
     solve(Day7("Day7-alt.txt", 1886043, 3842121))
 
-    solve(Day8("Day8-sample.txt", 0, 0))
+    solve(Day8("Day8-sample.txt", 21, 0))
 }
 
 fun solve(solution: Solution) {
