@@ -38,8 +38,8 @@ fun main() {
     solve(Day6("Day6-alt.txt", 1155, 2789))
 
     solve(Day7("Day7-sample.txt", 95437, 0))
-    solve(Day7("Day7.txt", 0, 0))
-    solve(Day7("Day7-alt.txt", 0, 0))
+    solve(Day7("Day7.txt", 1118405, 0))
+    solve(Day7("Day7-alt.txt", 1886043, 0))
 
 //    solve(7, pending, pending /*, "Day7-sample.txt|?|?"*//*, "Day7.txt|?|?" */)
 //    solve(8, pending, pending /*, "Day8-sample.txt|?|?"*//*, "Day8.txt|?|?" */)
