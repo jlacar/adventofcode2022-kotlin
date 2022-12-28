@@ -4,27 +4,30 @@ class Day7  (
     private val expected2: Int) : Solution {
 
     override val name: String get() = "Day 7 ($fileName)"
-    private val input = InputReader(fileName).lines()
+    private val root = parse(InputReader(fileName).lines())
 
-    override fun part1() = Result(expected1, sumOfSmallDirectories(input))
+    override fun part1() = Result(expected1, sumOfSmallDirectories())
 
-    private fun sumOfSmallDirectories(input: List<String>) = parse(input)
-        .walkDirectories { if (it.size() <= 100_000) it.size() else 0 }
+    private fun sumOfSmallDirectories(): Int {
+        val smallDirs: MutableList<Int> = mutableListOf()
 
-    override fun part2() = Result(expected2, smallestDirectoryToDelete(input))
+        root.walkDirectories { if (it.size() <= 100_000) smallDirs.add(it.size()) }
 
-    private fun smallestDirectoryToDelete(input: List<String>): Int {
-        val root = parse(input)
-        val spaceNeeded = spaceNeeded(root.size())
+        return smallDirs.sum()
+    }
+
+    override fun part2() = Result(expected2, smallestDirectoryToDelete())
+
+    private fun smallestDirectoryToDelete(): Int {
         val eligibleSizes: MutableList<Int> = mutableListOf()
+        val spaceNeeded = spaceNeeded(root.size())
 
-        root.walkDirectories { (if (it.size() >= spaceNeeded) eligibleSizes.add(it.size()) else 0).let { 0 } }
+        root.walkDirectories { if (it.size() >= spaceNeeded) eligibleSizes.add(it.size()) }
 
         return eligibleSizes.min()
     }
 
     private fun spaceNeeded(used: Int) = 30_000_000 - (70_000_000 - used)
-
 
     private fun parse(input: List<String>): FileAoC7 {
         val root = FileAoC7("/")
@@ -48,7 +51,6 @@ class Day7  (
                 line.startsWith("$ cd /") -> dirStack.push(root)
                 line.startsWith("$ cd ..") -> currentDir = upDir()
                 line.startsWith("$ cd ") -> currentDir = chdir(line)
-                line.startsWith("$ ls") -> { /* no-op */ }
                 line.startsWith("dir ") -> currentDir.contents.add(toDir(line.trim()))
                 line.first().isDigit() -> currentDir.contents.add(toFile(line.trim()))
             }
@@ -65,7 +67,8 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
     val contents: MutableList<FileAoC7> = mutableListOf()
     fun size(): Int = if (isDirectory) contents.sumOf { it.size() } else bytes
 
-    fun walkDirectories(selector: (FileAoC7) -> Int): Int {
-        return selector.invoke(this) + contents.filter { it.isDirectory }.sumOf { it.walkDirectories(selector) }
+    fun walkDirectories(action: (FileAoC7) -> Unit) {
+        action.invoke(this)
+        contents.filter { it.isDirectory }.forEach { it.walkDirectories(action) }
     }
 }
