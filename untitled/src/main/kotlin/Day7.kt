@@ -8,23 +8,13 @@ class Day7  (
 
     override fun part1() = Result(expected1, sumOfSmallDirectories())
 
-    private fun sumOfSmallDirectories(): Int {
-        val smallDirs: MutableList<Int> = mutableListOf()
-
-        root.walkDirectories { if (it.size() <= 100_000) smallDirs.add(it.size()) }
-
-        return smallDirs.sum()
-    }
+    private fun sumOfSmallDirectories() = findDirs { it.size() <= 100_000 }.sumOf { it.size() }
 
     override fun part2() = Result(expected2, smallestDirectoryToDelete())
 
     private fun smallestDirectoryToDelete(): Int {
-        val eligibleSizes: MutableList<Int> = mutableListOf()
         val spaceNeeded = spaceNeeded(root.size())
-
-        root.walkDirectories { if (it.size() >= spaceNeeded) eligibleSizes.add(it.size()) }
-
-        return eligibleSizes.min()
+        return findDirs { it.size() >= spaceNeeded }.minOf { it.size() }
     }
 
     private fun spaceNeeded(used: Int) = 30_000_000 - (70_000_000 - used)
@@ -57,6 +47,12 @@ class Day7  (
         }
 
         return root
+    }
+
+    private fun findDirs(predicate: (FileAoC7) -> Boolean): List<FileAoC7> {
+        val dirs: MutableList<FileAoC7> = mutableListOf()
+        root.walkDirectories { if (predicate.invoke(it)) dirs.add(it) }
+        return dirs
     }
 }
 
