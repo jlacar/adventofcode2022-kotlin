@@ -6,15 +6,15 @@ class Day7  (
     override val name: String get() = "Day 7 ($fileName)"
     private val root = parse(InputReader(fileName).lines())
 
-    override fun part1() = Result(expected1, sumOfSmallDirectories())
+    override fun part1() = Result(expected1, smallDirectories().sumOf { it.size() })
 
-    private fun sumOfSmallDirectories() = findDirs { it.size() <= 100_000 }.sumOf { it.size() }
+    private fun smallDirectories() = findDirs { it.size() <= 100_000 }
 
-    override fun part2() = Result(expected2, smallestDirectoryToDelete())
+    override fun part2() = Result(expected2, smallestDirectoryToDelete().size())
 
-    private fun smallestDirectoryToDelete(): Int {
+    private fun smallestDirectoryToDelete(): FileAoC7 {
         val spaceNeeded = spaceNeeded(root.size())
-        return findDirs { it.size() >= spaceNeeded }.minOf { it.size() }
+        return findDirs { it.size() >= spaceNeeded }.minByOrNull { it.size() }!!
     }
 
     private fun spaceNeeded(used: Int) = 30_000_000 - (70_000_000 - used)
@@ -55,7 +55,6 @@ class Day7  (
         return dirs
     }
 }
-
 
 data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean = false) {
     constructor(name: String) : this(name,0, true) {}
