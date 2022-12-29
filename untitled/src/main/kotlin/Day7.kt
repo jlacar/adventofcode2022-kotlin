@@ -12,10 +12,10 @@ class Day7  (
 
     override fun part2() = Result(expected2, smallestDirectoryToDelete().size())
 
-    private fun smallestDirectoryToDelete() = spaceNeeded(root.size()).let { minDirSize ->
-        findDirs { it.size() >= minDirSize }.minByOrNull { it.size() }!! }
+    private fun smallestDirectoryToDelete() = spaceNeeded().let { minSize ->
+        findDirs { it.size() >= minSize }.minByOrNull { it.size() }!! }
 
-    private fun spaceNeeded(used: Int) = 30_000_000 - (70_000_000 - used)
+    private fun spaceNeeded() = 30_000_000 - (70_000_000 - root.size())
 
     private fun parse(input: List<String>): FileAoC7 {
         val root = FileAoC7("/")
