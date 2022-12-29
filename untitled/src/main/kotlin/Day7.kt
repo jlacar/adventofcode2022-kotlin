@@ -49,11 +49,8 @@ class Day7  (
         return root
     }
 
-    private fun findDirs(predicate: (FileAoC7) -> Boolean): List<FileAoC7> {
-        val dirs: MutableList<FileAoC7> = mutableListOf()
-        root.walkDirectories { if (predicate.invoke(it)) dirs.add(it) }
-        return dirs
-    }
+    private fun findDirs(predicate: (FileAoC7) -> Boolean): List<FileAoC7> = mutableListOf<FileAoC7>()
+        .also { matches -> root.walkDirectories { if (predicate.invoke(it)) matches.add(it) } }
 }
 
 data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean = false) {
