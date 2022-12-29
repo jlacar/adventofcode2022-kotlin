@@ -63,6 +63,7 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
     fun size(): Int = if (isDirectory) contents.sumOf { it.size() } else bytes
 
     fun walkDirectories(action: (FileAoC7) -> Unit) {
+        if (!isDirectory) return
         action.invoke(this)
         contents.filter { it.isDirectory }.forEach { it.walkDirectories(action) }
     }
