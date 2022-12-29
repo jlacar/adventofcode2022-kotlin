@@ -80,6 +80,8 @@ class Stack<E> {
     private val stack: ArrayDeque<E> = ArrayDeque()
     val height: Int get() = stack.size
 
+    fun clear() = stack.clear()
+    
     fun push(element: E) = stack.add(element)
 
     fun pop(): E = stack.removeLast()

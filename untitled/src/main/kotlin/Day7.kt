@@ -36,7 +36,7 @@ class Day7  (
 
         input.forEach { line ->
             when {
-                line.startsWith("$ cd /") -> currentDir = root.also { dirStack.push(it) }
+                line.startsWith("$ cd /") -> currentDir = root.also { dirStack.clear() }
                 line.startsWith("$ cd ..") -> currentDir = upDir()
                 line.startsWith("$ cd ") -> currentDir = chdir(line)
                 line.startsWith("dir ") -> currentDir.contents.add(toDir(line.trim()))
