@@ -10,25 +10,30 @@ class Day8(
     override val day get() = 8
     override val source get() = "$fileName"
 
-
     override fun part1(): Result = Result(expected1, visibleTrees())
 
     private fun visibleTrees() = perimeter() + visibleInterior()
 
     private fun perimeter() = 2 * forestRows.size + 2 * forestRows[0].size - 4
 
-    private fun isVisibleIn(chars: CharArray, col: Int) =
-        chars.slice(0 until col).count { it >= chars[col]} == 0 ||
-        chars.slice(col+1 until chars.size).count { it >= chars[col]} == 0
+    private fun isVisible(trees: CharArray, position: Int) = trees[position].let {
+        isVisible(fromFront(trees, position), it) || isVisible(fromBehind(trees, position), it)
+    }
 
-    private fun isVisibleTree(row: Int, col: Int) =
-        isVisibleIn(forestRows[row], col) || isVisibleIn(forestCols[col], row)
+    private fun isVisible(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
+
+    private fun fromFront(chars: CharArray, col: Int) = chars.slice(0 until col)
+
+    private fun fromBehind(chars: CharArray, col: Int) = chars.slice(col + 1 until chars.size)
+
+    private fun isVisible(row: Int, col: Int) =
+        isVisible(forestRows[row], col) || isVisible(forestCols[col], row)
 
     private fun visibleInterior(): Int {
         val visible = mutableListOf<Char>()
         (1 until forestRows.lastIndex).forEach { row ->
             (1 until forestCols.lastIndex).forEach { col ->
-                if (isVisibleTree(row, col)) visible.add(forestRows[row][col])
+                if (isVisible(row, col)) visible.add(forestRows[row][col])
             }
         }
         return visible.count()
