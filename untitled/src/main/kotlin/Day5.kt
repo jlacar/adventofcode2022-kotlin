@@ -2,7 +2,10 @@ class Day5(
     private val fileName: String,
     private val expected1: String,
     private val expected2: String) : Solution {
-    override val name: String get() = "Day 5 ($fileName)"
+
+    override val day get() = 5
+    override val source get() = "$fileName"
+
 
     private val input = InputReader(fileName).lines().filter { it.isNotBlank() }
     override fun part1() = Result(expected1, Day5X(input).solve())
@@ -81,7 +84,7 @@ class Stack<E> {
     val height: Int get() = stack.size
 
     fun clear() = stack.clear()
-    
+
     fun push(element: E) = stack.add(element)
 
     fun pop(): E = stack.removeLast()

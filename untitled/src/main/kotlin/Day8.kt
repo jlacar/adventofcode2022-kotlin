@@ -7,7 +7,9 @@ class Day8(
 
     private val forestCols = (0 until forestRows[0].size).map { i -> forestRows.map { it[i] } }
 
-    override val name: String get() = "Day 8: ($fileName)"
+    override val day get() = 8
+    override val source get() = "$fileName"
+
 
     override fun part1(): Result = Result(expected1, visibleTrees())
 

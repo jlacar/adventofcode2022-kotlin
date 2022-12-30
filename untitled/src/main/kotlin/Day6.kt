@@ -2,7 +2,9 @@ class Day6(
     private val fileName: String,
     private val expected1: Int = 0,
     private val expected2: Int = 0) : Solution {
-    override val name: String get() = "Day 6 ($fileName)"
+
+    override val day get() = 6
+    override val source get() = "$fileName"
 
     private val input = InputReader(fileName).lines()
     override fun part1() = Result(expected1, solve(input.first(), 4))

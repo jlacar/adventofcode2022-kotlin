@@ -2,7 +2,9 @@ class Day2(
     private val fileName: String,
     private val expected1: Int,
     private val expected2: Int) : Solution {
-    override val name: String get() = "Day 2 ($fileName)"
+
+    override val day get() = 2
+    override val source get() = "$fileName"
 
     private val input = InputReader(fileName).lines()
     override fun part1() = Result(expected1, input.sumOf { rpsScore(it) })

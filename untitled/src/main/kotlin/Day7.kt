@@ -3,7 +3,9 @@ class Day7  (
     private val expected1: Int,
     private val expected2: Int) : Solution {
 
-    override val name: String get() = "Day 7 ($fileName)"
+    override val day get() = 7
+    override val source get() = "$fileName"
+
     private val root = parse(InputReader(fileName).lines())
 
     override fun part1() = Result(expected1, smallDirectories().sumOf { it.size() })

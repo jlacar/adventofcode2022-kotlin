@@ -8,7 +8,9 @@ val PendingResult = object : Result("?", "?") {
 }
 
 interface Solution {
-    val name: String get() = "Pending solution"
+    val day get() = 0
+    val source get() = "Pending"
+    val name get() = "Day $day ($source)"
     fun part1() : Result
     fun part2() : Result
 }
