@@ -44,6 +44,8 @@ fun main() {
     solve(Day7("Day7-alt.txt", 1886043, 3842121))
 
     solve(Day8("Day8-sample.txt", 21, 0))
+    solve(Day8("Day8.txt", 1690, 0))
+    solve(Day8("Day8-alt.txt", 1698, 0))
 }
 
 fun solve(solution: Solution) {
