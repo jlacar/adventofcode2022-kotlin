@@ -52,9 +52,9 @@ class Day8(
 
     private fun isVisible(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
 
-    private fun front(chars: CharArray, index: Int) = chars.dropLast(chars.size - index)
+    private fun front(trees: CharArray, index: Int) = trees.dropLast(trees.size - index)
 
-    private fun back(chars: CharArray, index: Int) = chars.drop(index + 1)
+    private fun back(trees: CharArray, index: Int) = trees.drop(index + 1)
 
     private fun isVisible(row: Int, col: Int) =
         isVisible(forestRows[row], col) || isVisible(forestCols[col], row)
