@@ -14,23 +14,20 @@ class Day8(
 
     override fun part2() = Result(expected2, scenicScores().max())
 
-    private fun scenicScores(): List<Int> {
-        val scores = mutableListOf<Int>()
-        (1 until forestRows.lastIndex).forEach { row ->
-            (1 until forestCols.lastIndex).forEach { col ->
-                scores.add(scenicScores(forestRows[row], col) * scenicScores(forestCols[col], row))
+    private fun scenicScores() =
+        (1 until forestRows.lastIndex).map { row ->
+            (1 until forestCols.lastIndex).map { col ->
+                scenicScores(forestRows[row], col) * scenicScores(forestCols[col], row)
             }
-        }
-        return scores
-    }
+        }.flatten()
 
     private fun scenicScores(trees: CharArray, pos: Int) = frontScore(trees, pos) * backScore(trees, pos)
 
     private fun frontScore(trees: CharArray, pos: Int) =
-        scenicScore(trees[pos], front(trees, pos).reversed())
+        scenicScore(trees[pos], fromFront(trees, pos).reversed())
 
     private fun backScore(trees: CharArray, pos: Int) =
-        scenicScore(trees[pos], back(trees, pos))
+        scenicScore(trees[pos], fromBehind(trees, pos))
 
     private fun scenicScore(tree: Char, otherTrees: List<Char>) =
         if (otherTrees.isEmpty()) 0
@@ -38,28 +35,26 @@ class Day8(
             if (obscured == 0) otherTrees.size else otherTrees.size - obscured + 1
         }
 
-
     private fun visibleTrees() = perimeter() + visibleInterior()
 
     private fun perimeter() = 2 * forestRows.size + 2 * forestRows[0].size - 4
 
     private fun visibleInterior() =
         (1 until forestRows.lastIndex).sumOf { row ->
-            (1 until forestCols.lastIndex).count { col -> isVisible(row, col) }
+            (1 until forestCols.lastIndex).count { col -> canSeeTreeAt(row, col) }
         }
 
-    private fun isVisible(trees: CharArray, pos: Int) = trees[pos].let {
-        isVisible(front(trees, pos), it) || isVisible(back(trees, pos), it)
+    private fun canSeeTreeAt(row: Int, col: Int) = canBeSeen(forestRows[row], col) || canBeSeen(forestCols[col], row)
+
+    private fun canBeSeen(trees: CharArray, pos: Int) = trees[pos].let {
+        isNotObscured(fromFront(trees, pos), it) || isNotObscured(fromBehind(trees, pos), it)
     }
 
-    private fun isVisible(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
+    private fun isNotObscured(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
 
-    private fun front(trees: CharArray, pos: Int) = trees.dropLast(trees.size - pos)
+    private fun fromFront(trees: CharArray, pos: Int) = trees.dropLast(trees.size - pos)
 
-    private fun back(trees: CharArray, pos: Int) = trees.drop(pos + 1)
-
-    private fun isVisible(row: Int, col: Int) = isVisible(forestRows[row], col) || isVisible(forestCols[col], row)
-
+    private fun fromBehind(trees: CharArray, pos: Int) = trees.drop(pos + 1)
 }
 
 fun main() {
@@ -69,4 +64,3 @@ fun main() {
         Day8("Day8-alt.txt", 1698, 672280),
     ).forEach { it.report() }
 }
-
