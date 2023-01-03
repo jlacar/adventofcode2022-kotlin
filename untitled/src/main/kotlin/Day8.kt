@@ -30,10 +30,13 @@ class Day8(
         scenicScore(trees[pos], fromBehind(trees, pos))
 
     private fun scenicScore(tree: Char, otherTrees: List<Char>) =
-        if (otherTrees.isEmpty()) 0
-        else otherTrees.dropWhile { it < tree }.size.let { obscured ->
-            if (obscured == 0) otherTrees.size else otherTrees.size - obscured + 1
-        }
+        if (otherTrees.isNotEmpty()) {
+            otherTrees.dropWhile { it < tree }.size.let { obscured ->
+                otherTrees.size - obscured + treeInFrontOf(obscured)
+            }
+        } else 0
+
+    private fun treeInFrontOf(obscured: Int) = if (obscured != 0) 1 else 0
 
     private fun visibleTrees() = perimeter() + visibleInterior()
 
