@@ -3,16 +3,36 @@ class Day8(
     private val expected1: Int,
     private val expected2: Int) : Solution
 {
-    private val forestRows = InputReader(fileName).lines().map { it.toCharArray() }
-
-    private val forestCols = (0 until forestRows[0].size).map { i -> forestRows.map { it[i] }.toCharArray() }
-
     override val day get() = 8
     override val source get() = "$fileName"
 
     override fun part1() = Result(expected1, visibleTrees())
 
     override fun part2() = Result(expected2, scenicScores().max())
+
+    private val forestRows = InputReader(fileName).lines().map { it.toCharArray() }
+    private val forestCols = forestRows[0].indices.map { i -> forestRows.map { it[i] }.toCharArray() }
+
+    private fun visibleTrees() = perimeter() + visibleInterior()
+
+    private fun perimeter() = 2 * forestRows.size + 2 * forestRows[0].size - 4
+
+    private fun visibleInterior() =
+        (1 until forestRows.lastIndex).sumOf { row ->
+            (1 until forestCols.lastIndex).count { col -> canSeeTreeAt(row, col) }
+        }
+
+    private fun canSeeTreeAt(row: Int, col: Int) = canBeSeen(forestRows[row], col) || canBeSeen(forestCols[col], row)
+
+    private fun canBeSeen(trees: CharArray, pos: Int) = trees[pos].let {
+        isNotObscured(fromFront(trees, pos), it) || isNotObscured(fromBehind(trees, pos), it)
+    }
+
+    private fun isNotObscured(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
+
+    private fun fromFront(trees: CharArray, pos: Int) = trees.dropLast(trees.size - pos)
+
+    private fun fromBehind(trees: CharArray, pos: Int) = trees.drop(pos + 1)
 
     private fun scenicScores() =
         (1 until forestRows.lastIndex).map { row ->
@@ -37,27 +57,6 @@ class Day8(
         } else 0
 
     private fun treeInFrontOf(obscured: Int) = if (obscured != 0) 1 else 0
-
-    private fun visibleTrees() = perimeter() + visibleInterior()
-
-    private fun perimeter() = 2 * forestRows.size + 2 * forestRows[0].size - 4
-
-    private fun visibleInterior() =
-        (1 until forestRows.lastIndex).sumOf { row ->
-            (1 until forestCols.lastIndex).count { col -> canSeeTreeAt(row, col) }
-        }
-
-    private fun canSeeTreeAt(row: Int, col: Int) = canBeSeen(forestRows[row], col) || canBeSeen(forestCols[col], row)
-
-    private fun canBeSeen(trees: CharArray, pos: Int) = trees[pos].let {
-        isNotObscured(fromFront(trees, pos), it) || isNotObscured(fromBehind(trees, pos), it)
-    }
-
-    private fun isNotObscured(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
-
-    private fun fromFront(trees: CharArray, pos: Int) = trees.dropLast(trees.size - pos)
-
-    private fun fromBehind(trees: CharArray, pos: Int) = trees.drop(pos + 1)
 }
 
 fun main() {
