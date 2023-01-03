@@ -10,24 +10,31 @@ class Day8(
     override val day get() = 8
     override val source get() = "$fileName"
 
-    override fun part1(): Result = Result(expected1, visibleTrees())
+    override fun part1() = Result(expected1, visibleTrees())
+
+    override fun part2() = PendingResult // Result(expected2, scenicScores().max())
+
+    private fun scenicScores(): List<Int> {
+        val scores = mutableListOf<Int>()
+        forestRows.indices.forEach { row ->
+            forestCols.indices.forEach { col ->
+                scores.add(scenicScores(forestRows[row], col)).also { println("row $row ${scores.last()}") }
+                scores.add(scenicScores(forestCols[col], row)).also { println("col $col ${scores.last()}") }
+            }
+        }
+        return scores
+    }
+
+    private fun scenicScores(trees: CharArray, position: Int): Int {
+        val frontScore = position - front(trees, position).dropLastWhile { it <= trees[position] }.size
+        val backScore = trees.size - back(trees, position).dropWhile { it <= trees[position] }.size - position - 1
+        println("trees ${trees.joinToString(",")} front $frontScore behind $backScore")
+        return frontScore + backScore
+    }
 
     private fun visibleTrees() = perimeter() + visibleInterior()
 
     private fun perimeter() = 2 * forestRows.size + 2 * forestRows[0].size - 4
-
-    private fun isVisible(trees: CharArray, position: Int) = trees[position].let {
-        isVisible(fromFront(trees, position), it) || isVisible(fromBehind(trees, position), it)
-    }
-
-    private fun isVisible(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
-
-    private fun fromFront(chars: CharArray, col: Int) = chars.slice(0 until col)
-
-    private fun fromBehind(chars: CharArray, col: Int) = chars.slice(col + 1 until chars.size)
-
-    private fun isVisible(row: Int, col: Int) =
-        isVisible(forestRows[row], col) || isVisible(forestCols[col], row)
 
     private fun visibleInterior(): Int {
         val visible = mutableListOf<Char>()
@@ -39,6 +46,21 @@ class Day8(
         return visible.count()
     }
 
-    override fun part2(): Result = PendingResult
+    private fun isVisible(trees: CharArray, position: Int) = trees[position].let {
+        isVisible(front(trees, position), it) || isVisible(back(trees, position), it)
+    }
 
+    private fun isVisible(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
+
+    private fun front(chars: CharArray, index: Int) = chars.dropLast(chars.size - index)
+
+    private fun back(chars: CharArray, index: Int) = chars.drop(index + 1)
+
+    private fun isVisible(row: Int, col: Int) =
+        isVisible(forestRows[row], col) || isVisible(forestCols[col], row)
+
+}
+
+fun main() {
+    println(Day8("Day8-test.txt", 0, 0).part2().report())
 }
