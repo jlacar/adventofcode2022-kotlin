@@ -51,12 +51,12 @@ class Day8(
 
     private fun scenicScore(tree: Char, otherTrees: List<Char>) =
         if (otherTrees.isNotEmpty()) {
-            otherTrees.dropWhile { it < tree }.size.let { obscured ->
-                otherTrees.size - obscured + treeInFrontOf(obscured)
+            otherTrees.dropWhile { it < tree }.size.let { remaining ->
+                otherTrees.size - remaining + treeInFrontOf(remaining)
             }
         } else 0
 
-    private fun treeInFrontOf(obscured: Int) = if (obscured != 0) 1 else 0
+    private fun treeInFrontOf(remaining: Int) = if (remaining != 0) 1 else 0
 }
 
 fun main() {
