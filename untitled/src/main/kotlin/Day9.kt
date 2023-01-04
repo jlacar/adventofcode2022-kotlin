@@ -1,5 +1,3 @@
-import kotlin.Result
-
 class Day9(
     private val fileName: String,
     private val expected1: Int,
@@ -8,35 +6,43 @@ class Day9(
     override val day get() = 9
     override val source get() = "$fileName"
 
-    override fun part1() = Result(expected1, positionsVisited().size)
+    override fun part1() = Result(expected1, positionsVisited().distinct().count())
 
-    val moves = parse(InputReader(fileName).lines())
+    enum class Direction {
+        R { override fun step() = Pair(1, 0) },
+        L { override fun step() = Pair(-1, 0) },
+        U { override fun step() = Pair(0, 1) },
+        D { override fun step() = Pair(0, -1) };
 
-    private fun positionsVisited() =
-        mutableSetOf<Pair<Int, Int>>().let { visited ->
-            with (visited) {
-                add(Pair(0, 0))
-                add(Pair(1, 0))
-                add(Pair(0, 1))
-                add(Pair(0, 0))
+        abstract fun step(): Pair<Int, Int>
+    }
+
+    private val moves = parse(InputReader(fileName).lines())
+
+    private val rope = object {
+        var head = Pair(0, 0)
+        var tail = Pair(0, 0)
+
+        fun move(steps: Pair<Direction, Int>): List<Pair<Int, Int>> =
+            (1..steps.second).map {
+                whereIsTailAfter(movingIn = steps.first)
             }
-            visited
-        }
+
+        private fun whereIsTailAfter(movingIn: Day9.Direction): Pair<Int, Int> = Pair(0, 0)
+    }
+
+    private fun positionsVisited() = mutableListOf<Pair<Int, Int>>().let { visited ->
+        moves.forEach { steps -> visited.addAll(rope.move(steps)) }
+        visited
+    }
 
     override fun part2() = PendingResult
 
-    private fun parse(lines: List<String>): List<Pair<Int, Int>> {
+    private fun parse(lines: List<String>): List<Pair<Direction, Int>> {
 
-        fun parseMove(move: String): Pair<Int, Int> {
-            val (direction, n) = move.split(" ")
-            val steps = n.toInt()
-            return when (direction) {
-                "R" -> Pair(steps, 0)
-                "L" -> Pair(-steps, 0)
-                "U" -> Pair(0, steps)
-                "D" -> Pair(0, -steps)
-                else -> Pair(0, 0)
-            }
+        fun parseMove(move: String): Pair<Direction, Int> {
+            val (direction, steps) = move.split(" ")
+            return Pair(Direction.valueOf(direction), steps.toInt())
         }
 
         return lines.map { parseMove(it) }
