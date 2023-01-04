@@ -60,9 +60,9 @@ class Day8(
 }
 
 fun main() {
-    listOf(
+    Solution.report(
         Day8("Day8-sample.txt", 21, 8),
         Day8("Day8.txt", 1690, 535680),
         Day8("Day8-alt.txt", 1698, 672280),
-    ).forEach { it.report() }
+    )
 }

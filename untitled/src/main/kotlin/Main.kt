@@ -14,15 +14,19 @@ interface Solution {
     fun part1() : Result
     fun part2() : Result
 
-    fun report() {
-       println("\n$name")
-       println(part1().report())
-       println(part2().report())
+    companion object {
+        fun report(vararg solution: Solution) {
+            solution.forEach {
+                println("\n${it.name}")
+                println(it.part1().report())
+                println(it.part2().report())
+            }
+        }
     }
 }
 
 fun main() {
-    listOf(
+    Solution.report(
         Day1("Day1-sample.txt", 24000, 45000),
         Day1("Day1.txt", 71502, 208191),
         Day1("Day1-alt.txt", 69836, 207968),
@@ -53,7 +57,7 @@ fun main() {
         Day8("Day8-sample.txt", 21, 8),
         Day8("Day8.txt", 1690, 535680),
         Day8("Day8-alt.txt", 1698, 672280),
-    ).forEach { it.report() }
+    )
 }
 
 
