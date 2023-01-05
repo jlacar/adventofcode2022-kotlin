@@ -8,7 +8,7 @@ class Day9(
     override val day get() = 9
     override val source get() = "$fileName"
 
-    override fun part1() = Result(expected1, positionsVisited().distinct().count())
+    override fun part1() = Result(expected1, distinctPositionsVisited().count())
 
     enum class Direction {
         R { override fun step() = Pair(1, 0) },
@@ -26,12 +26,11 @@ class Day9(
         var head = Pair(0, 0)
         var tail = Pair(0, 0)
 
-        operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>) = Pair(this.first + other.first, this.second + other.second)
+        operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>) =
+            Pair(this.first + other.first, this.second + other.second)
 
-        fun move(steps: Pair<Direction, Int>): List<Pair<Int, Int>> =
-            (1..steps.second).map {
-                tailAfter(headMove = steps.first)
-            }
+        fun tailPositions(steps: Pair<Direction, Int>): List<Pair<Int, Int>> =
+            (1..steps.second).map { _ -> tailAfter(headMove = steps.first) }
 
         private fun tailAfter(headMove: Day9.Direction): Pair<Int, Int> {
             head += headMove.step()
@@ -39,10 +38,13 @@ class Day9(
             return tail
         }
 
-        private fun tailMoveAfter(headMove: Direction): Pair<Int, Int> = if (tailNeedsToMove())
-            headMove.step() + aligningMoveFor(headMove) else Direction.NONE.step()
+        private fun tailMoveAfter(headMove: Direction): Pair<Int, Int> = if (tailShouldMove())
+            headMove.step() + alignDiagonalTail(headMove) else Direction.NONE.step()
 
-        private fun aligningMoveFor(headMove: Direction) =
+        private fun tailShouldMove(): Boolean =
+            abs(head.first - tail.first) > 1 || abs(head.second - tail.second) > 1
+
+        private fun alignDiagonalTail(headMove: Direction) =
             when (headMove) {
                 Direction.R, Direction.L -> when {
                     tail.second < head.second -> Direction.U.step()
@@ -56,16 +58,9 @@ class Day9(
                 }
                 else -> Direction.NONE.step()
             }
-
-
-        private fun tailNeedsToMove(): Boolean =
-            abs(head.first - tail.first) > 1 || abs(head.second - tail.second) > 1
     }
 
-    private fun positionsVisited() = mutableListOf<Pair<Int, Int>>().let { visited ->
-        moves.forEach { steps -> visited.addAll(rope.move(steps)) }
-        visited
-    }
+    private fun distinctPositionsVisited() = moves.map { steps -> rope.tailPositions(steps) }.flatten().distinct()
 
     override fun part2() = PendingResult
 
@@ -83,6 +78,6 @@ class Day9(
 fun main() {
     Solution.report(
         Day9("Day9-sample.txt", 13, 0),
-        Day9("Day9.txt", 0, 0),
+        Day9("Day9.txt", 6563, 0),
     )
 }
