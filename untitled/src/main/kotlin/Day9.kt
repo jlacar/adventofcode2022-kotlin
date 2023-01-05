@@ -36,33 +36,33 @@ class Day9(
         fun tailPositions(steps: Pair<Direction, Int>) = steps.let { (direction, count) ->
             (1..count).map { _ ->
                 head = head.move(direction)
-                tail = follow(direction)
+                tail = followHead(direction)
                 tail
             }
         }
 
-        private fun follow(direction: Direction) = if (tailShouldMove())
-            tail.move(direction) + alignDiagonalTail(direction) else tail
+        private fun followHead(direction: Direction) = if (tailShouldMove())
+            tail.move(direction).move(diagonal(direction)) else tail
 
         private fun tailShouldMove() = abs(head.x - tail.x) > 1 || abs(head.y - tail.y) > 1
 
-        private fun alignDiagonalTail(direction: Direction) =
+        private fun diagonal(direction: Direction) =
             when (direction) {
                 R, L -> alignTailHorizontally()
                 U, D -> alignTailVertically()
-                else -> NONE.step()
+                else -> NONE
             }
 
         private fun alignTailVertically() = when {
-            tail.x < head.x -> R.step()
-            tail.x > head.x -> L.step()
-            else -> NONE.step()
+            tail.x < head.x -> R
+            tail.x > head.x -> L
+            else -> NONE
         }
 
         private fun alignTailHorizontally() = when {
-            tail.y < head.y -> U.step()
-            tail.y > head.y -> D.step()
-            else -> NONE.step()
+            tail.y < head.y -> U
+            tail.y > head.y -> D
+            else -> NONE
         }
     }
 
