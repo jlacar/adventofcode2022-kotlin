@@ -1,3 +1,4 @@
+import Day9.Direction.*
 import kotlin.math.abs
 
 class Day9(
@@ -29,35 +30,38 @@ class Day9(
         operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>) =
             Pair(this.first + other.first, this.second + other.second)
 
-        fun tailPositions(steps: Pair<Direction, Int>): List<Pair<Int, Int>> =
-            (1..steps.second).map { _ -> tailAfter(headMove = steps.first) }
-
-        private fun tailAfter(headMove: Day9.Direction): Pair<Int, Int> {
-            head += headMove.step()
-            tail += tailMoveAfter(headMove)
-            return tail
+        fun tailPositions(steps: Pair<Direction, Int>): List<Pair<Int, Int>> = steps.let { (headMove, count) ->
+            (1..count).map { _ ->
+                head += headMove.step()
+                tail += tailMoveAfter(headMove)
+                tail
+            }
         }
 
         private fun tailMoveAfter(headMove: Direction): Pair<Int, Int> = if (tailShouldMove())
-            headMove.step() + alignDiagonalTail(headMove) else Direction.NONE.step()
+            headMove.step() + alignDiagonalTail(headMove) else NONE.step()
 
         private fun tailShouldMove(): Boolean =
             abs(head.first - tail.first) > 1 || abs(head.second - tail.second) > 1
 
         private fun alignDiagonalTail(headMove: Direction) =
             when (headMove) {
-                Direction.R, Direction.L -> when {
-                    tail.second < head.second -> Direction.U.step()
-                    tail.second > head.second -> Direction.D.step()
-                    else -> Direction.NONE.step()
-                }
-                Direction.U, Direction.D -> when {
-                    tail.first < head.first -> Direction.R.step()
-                    tail.first > head.first -> Direction.L.step()
-                    else -> Direction.NONE.step()
-                }
-                else -> Direction.NONE.step()
+                R, L -> alignHorizontally()
+                U, D -> alignVertically()
+                else -> NONE.step()
             }
+
+        private fun alignVertically() = when {
+            tail.first < head.first -> R.step()
+            tail.first > head.first -> L.step()
+            else -> NONE.step()
+        }
+
+        private fun alignHorizontally() = when {
+            tail.second < head.second -> U.step()
+            tail.second > head.second -> D.step()
+            else -> NONE.step()
+        }
     }
 
     private fun distinctPositionsVisited() = moves.map { steps -> rope.tailPositions(steps) }.flatten().distinct()
@@ -68,7 +72,7 @@ class Day9(
 
         fun parseMove(move: String): Pair<Direction, Int> {
             val (direction, steps) = move.split(" ")
-            return Pair(Direction.valueOf(direction), steps.toInt())
+            return Pair(valueOf(direction), steps.toInt())
         }
 
         return lines.map { parseMove(it) }
