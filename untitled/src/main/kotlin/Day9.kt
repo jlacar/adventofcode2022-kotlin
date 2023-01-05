@@ -1,3 +1,5 @@
+import kotlin.math.abs
+
 class Day9(
     private val fileName: String,
     private val expected1: Int,
@@ -12,7 +14,8 @@ class Day9(
         R { override fun step() = Pair(1, 0) },
         L { override fun step() = Pair(-1, 0) },
         U { override fun step() = Pair(0, 1) },
-        D { override fun step() = Pair(0, -1) };
+        D { override fun step() = Pair(0, -1) },
+        NONE { override fun step() = Pair(0, 0) };
 
         abstract fun step(): Pair<Int, Int>
     }
@@ -23,12 +26,40 @@ class Day9(
         var head = Pair(0, 0)
         var tail = Pair(0, 0)
 
+        operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>) = Pair(this.first + other.first, this.second + other.second)
+
         fun move(steps: Pair<Direction, Int>): List<Pair<Int, Int>> =
             (1..steps.second).map {
-                whereIsTailAfter(movingIn = steps.first)
+                tailAfter(headMove = steps.first)
             }
 
-        private fun whereIsTailAfter(movingIn: Day9.Direction): Pair<Int, Int> = Pair(0, 0)
+        private fun tailAfter(headMove: Day9.Direction): Pair<Int, Int> {
+            head += headMove.step()
+            tail += tailMoveAfter(headMove)
+            return tail
+        }
+
+        private fun tailMoveAfter(headMove: Direction): Pair<Int, Int> = if (tailNeedsToMove())
+            headMove.step() + aligningMoveFor(headMove) else Direction.NONE.step()
+
+        private fun aligningMoveFor(headMove: Direction) =
+            when (headMove) {
+                Direction.R, Direction.L -> when {
+                    tail.second < head.second -> Direction.U.step()
+                    tail.second > head.second -> Direction.D.step()
+                    else -> Direction.NONE.step()
+                }
+                Direction.U, Direction.D -> when {
+                    tail.first < head.first -> Direction.R.step()
+                    tail.first > head.first -> Direction.L.step()
+                    else -> Direction.NONE.step()
+                }
+                else -> Direction.NONE.step()
+            }
+
+
+        private fun tailNeedsToMove(): Boolean =
+            abs(head.first - tail.first) > 1 || abs(head.second - tail.second) > 1
     }
 
     private fun positionsVisited() = mutableListOf<Pair<Int, Int>>().let { visited ->
@@ -51,6 +82,7 @@ class Day9(
 
 fun main() {
     Solution.report(
-        Day9("Day9-sample.txt", 0, 0),
+        Day9("Day9-sample.txt", 13, 0),
+        Day9("Day9.txt", 0, 0),
     )
 }
