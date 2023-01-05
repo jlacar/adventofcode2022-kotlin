@@ -13,6 +13,8 @@ class Day9(
 
     data class Position(val x: Int, val y: Int) {
         operator fun plus(other: Position) = Position(this.x + other.x, this.y + other.y)
+
+        fun move(dir: Direction) = this + dir.step()
     }
 
     enum class Direction {
@@ -31,33 +33,33 @@ class Day9(
         var head = Position(0, 0)
         var tail = Position(0, 0)
 
-        fun tailPositions(steps: Pair<Direction, Int>) = steps.let { (headMove, count) ->
+        fun tailPositions(steps: Pair<Direction, Int>) = steps.let { (direction, count) ->
             (1..count).map { _ ->
-                head += headMove.step()
-                tail += tailMoveAfter(headMove)
+                head = head.move(direction)
+                tail = follow(direction)
                 tail
             }
         }
 
-        private fun tailMoveAfter(headMove: Direction) = if (tailShouldMove())
-            headMove.step() + alignDiagonalTail(headMove) else NONE.step()
+        private fun follow(direction: Direction) = if (tailShouldMove())
+            tail.move(direction) + alignDiagonalTail(direction) else tail
 
         private fun tailShouldMove() = abs(head.x - tail.x) > 1 || abs(head.y - tail.y) > 1
 
-        private fun alignDiagonalTail(headMove: Direction) =
-            when (headMove) {
-                R, L -> alignHorizontally()
-                U, D -> alignVertically()
+        private fun alignDiagonalTail(direction: Direction) =
+            when (direction) {
+                R, L -> alignTailHorizontally()
+                U, D -> alignTailVertically()
                 else -> NONE.step()
             }
 
-        private fun alignVertically() = when {
+        private fun alignTailVertically() = when {
             tail.x < head.x -> R.step()
             tail.x > head.x -> L.step()
             else -> NONE.step()
         }
 
-        private fun alignHorizontally() = when {
+        private fun alignTailHorizontally() = when {
             tail.y < head.y -> U.step()
             tail.y > head.y -> D.step()
             else -> NONE.step()
