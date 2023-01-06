@@ -26,9 +26,9 @@ class Day7  (
         val root = FileAoC7("/")
         val dirStack = Stack<FileAoC7>()
 
-        fun dirName(line: String) = line.split(" ")[1]
-        fun toDir(line: String) = FileAoC7(dirName(line))
-        fun toFile(line: String) = line.split(" ").let { FileAoC7(it[1], it[0].toInt()) }
+        fun dirName(line: String) = line.split(" ")[2]
+        fun directoryFrom(line: String) = FileAoC7(line.split(" ")[1])
+        fun fileFrom(line: String) = line.split(" ").let { (bytes, name) -> FileAoC7(name, bytes.toInt()) }
         fun currentDir() = dirStack.peek()!!.contents
         fun chdir(dir: String) = currentDir().first { it.name == dir }.also { dirStack.push(it) }
 
@@ -36,9 +36,9 @@ class Day7  (
             when {
                 line.startsWith("$ cd /") -> dirStack.push(root)
                 line.startsWith("$ cd ..") -> dirStack.pop()
-                line.startsWith("$ cd ") -> chdir(dirName(line.substring(2)))
-                line.startsWith("dir ") -> currentDir().add(toDir(line))
-                line.first().isDigit() -> currentDir().add(toFile(line))
+                line.startsWith("$ cd ") -> chdir(dirName(line))
+                line.startsWith("dir ") -> currentDir().add(directoryFrom(line))
+                line.first().isDigit() -> currentDir().add(fileFrom(line))
             }
         }
 
@@ -53,8 +53,6 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
     fun size(): Int = if (isDirectory) contents.sumOf { it.size() } else bytes
 
     fun walkDirectories(action: (FileAoC7) -> Unit) {
-        if (!isDirectory) return
-        action.invoke(this)
-        contents.filter { it.isDirectory }.forEach { it.walkDirectories(action) }
+        if (isDirectory) action.invoke(this).also { contents.forEach { it.walkDirectories(action) } }
     }
 }
