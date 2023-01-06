@@ -38,16 +38,12 @@ class Day8(
     private fun scenicScores() =
         (1 until forestRows.lastIndex).map { row ->
             (1 until forestCols.lastIndex).map { col ->
-                scenicScores(forestRows[row], col) * scenicScores(forestCols[col], row)
+                scenicScore(forestRows[row], col) * scenicScore(forestCols[col], row)
             }
         }.flatten()
 
-    private fun scenicScores(trees: CharArray, pos: Int) = frontScore(trees, pos) * backScore(trees, pos)
-
-    private fun frontScore(trees: CharArray, pos: Int) =
-        scenicScore(trees[pos], fromFront(trees, pos).reversed())
-
-    private fun backScore(trees: CharArray, pos: Int) =
+    private fun scenicScore(trees: CharArray, pos: Int) =
+        scenicScore(trees[pos], fromFront(trees, pos).reversed()) *
         scenicScore(trees[pos], fromBehind(trees, pos))
 
     private fun scenicScore(tree: Char, otherTrees: List<Char>) =
