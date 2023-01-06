@@ -13,11 +13,11 @@ class Day8(
     private val forestRows = InputReader(fileName).lines().map { it.toCharArray() }
     private val forestCols = forestRows[0].indices.map { i -> forestRows.map { it[i] }.toCharArray() }
 
-    private fun visibleTrees() = perimeter() + visibleInterior()
+    private fun visibleTrees() = perimeter() + visibleFromOutside()
 
     private fun perimeter() = 2 * forestRows.size + 2 * forestRows[0].size - 4
 
-    private fun visibleInterior() =
+    private fun visibleFromOutside() =
         (1 until forestRows.lastIndex).sumOf { row ->
             (1 until forestCols.lastIndex).count { col -> canSeeTreeAt(row, col) }
         }
@@ -26,14 +26,14 @@ class Day8(
         canSeeFromOutside(forestRows[row], col) || canSeeFromOutside(forestCols[col], row)
 
     private fun canSeeFromOutside(trees: CharArray, pos: Int) = trees[pos].let {
-        isNotObscured(fromFront(trees, pos), it) || isNotObscured(fromBehind(trees, pos), it)
+        isNotObscured(it, front(trees, pos)) || isNotObscured(it, back(trees, pos))
     }
 
-    private fun isNotObscured(trees: List<Char>, tree: Char) = trees.count { it >= tree } == 0
+    private fun isNotObscured(tree: Char, trees: List<Char>) = trees.none { it >= tree }
 
-    private fun fromFront(trees: CharArray, pos: Int) = trees.dropLast(trees.size - pos)
+    private fun front(trees: CharArray, pos: Int) = trees.dropLast(trees.size - pos)
 
-    private fun fromBehind(trees: CharArray, pos: Int) = trees.drop(pos + 1)
+    private fun back(trees: CharArray, pos: Int) = trees.drop(pos + 1)
 
     private fun scenicScores() =
         (1 until forestRows.lastIndex).map { row ->
@@ -43,8 +43,8 @@ class Day8(
         }.flatten()
 
     private fun scenicScore(trees: CharArray, pos: Int) =
-        scenicScore(trees[pos], fromFront(trees, pos).reversed()) *
-        scenicScore(trees[pos], fromBehind(trees, pos))
+        scenicScore(trees[pos], front(trees, pos).reversed()) *
+        scenicScore(trees[pos], back(trees, pos))
 
     private fun scenicScore(tree: Char, otherTrees: List<Char>) =
         if (otherTrees.isNotEmpty()) howManyCanBeSeen(otherTrees, tree) else 0
