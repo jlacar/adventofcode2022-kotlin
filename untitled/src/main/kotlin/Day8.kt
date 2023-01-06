@@ -22,9 +22,10 @@ class Day8(
             (1 until forestCols.lastIndex).count { col -> canSeeTreeAt(row, col) }
         }
 
-    private fun canSeeTreeAt(row: Int, col: Int) = canBeSeen(forestRows[row], col) || canBeSeen(forestCols[col], row)
+    private fun canSeeTreeAt(row: Int, col: Int) =
+        canSeeFromOutside(forestRows[row], col) || canSeeFromOutside(forestCols[col], row)
 
-    private fun canBeSeen(trees: CharArray, pos: Int) = trees[pos].let {
+    private fun canSeeFromOutside(trees: CharArray, pos: Int) = trees[pos].let {
         isNotObscured(fromFront(trees, pos), it) || isNotObscured(fromBehind(trees, pos), it)
     }
 
@@ -50,13 +51,14 @@ class Day8(
         scenicScore(trees[pos], fromBehind(trees, pos))
 
     private fun scenicScore(tree: Char, otherTrees: List<Char>) =
-        if (otherTrees.isNotEmpty()) {
-            otherTrees.dropWhile { it < tree }.size.let { remaining ->
-                otherTrees.size - remaining + treeInFrontOf(remaining)
-            }
-        } else 0
+        if (otherTrees.isNotEmpty()) howManyCanBeSeen(otherTrees, tree) else 0
 
-    private fun treeInFrontOf(remaining: Int) = if (remaining != 0) 1 else 0
+    private fun howManyCanBeSeen(otherTrees: List<Char>, tree: Char) =
+        otherTrees.dropWhile { it < tree }.let { remaining ->
+            otherTrees.size - remaining.size + firstTree(remaining)
+        }
+
+    private fun firstTree(remaining: List<Char>) = if (remaining.isEmpty()) 0 else 1
 }
 
 fun main() {
