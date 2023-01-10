@@ -17,11 +17,11 @@ class Day9Test {
         inner class `step(Direction)` {
             @ParameterizedTest(name = "origin.step({0}) -> ({1}, {2})")
             @CsvSource(delimiter = ',', textBlock =
-                """R, 1, 0
-                L, -1, 0
-                U, 0, 1
-                D, 0, -1
-                NONE, 0, 0"""
+                """R,    1, 0
+                   L,   -1, 0
+                   U,    0, 1
+                   D,    0,-1
+                   NONE, 0, 0"""
             )
             fun `from origin, step`(direction: Direction, xE: Int, yE: Int) =
                 assertEquals(Position(xE, yE), origin.step(direction))
@@ -34,11 +34,11 @@ class Day9Test {
             @ParameterizedTest(name = "{0} step from origin, expect ({1}, {2})")
             @CsvSource(
                 delimiter = ',', textBlock =
-                """ R, -1, 0
-                L, 1, 0
-                U, 0, -1
-                D, 0, 1
-                NONE, 0, 0"""
+                """R,   -1, 0
+                   L,    1, 0
+                   U,    0,-1
+                   D,    0, 1
+                   NONE, 0, 0"""
             )
             fun `to origin from relative position `(dir: Direction, xE: Int, yE: Int) {
                 assertEquals(Position(xE, yE), origin.step(dir).distanceTo(origin))
@@ -47,12 +47,12 @@ class Day9Test {
             @ParameterizedTest(name = "({0}, {1}).distanceTo(origin) should be ({2}, {3})")
             @CsvSource(
                 delimiter = ',', textBlock =
-                """3, 0, -3, 0
-                -3, 0, 3, 0
-                0, 3, 0, -3
-                0, -3, 0, 3
-                4, 5, -4, -5
-                -5, -4, 5, 4"""
+                """3, 0  , -3, 0
+                  -3, 0  ,  3, 0
+                   0, 3  ,  0,-3
+                   0,-3  ,  0, 3
+                   4, 5  , -4,-5
+                  -5,-4  ,  5, 4"""
             )
             fun `distanceTo relative to origin `(xS: Int, yS: Int, xE: Int, yE: Int) =
                 assertEquals(Position(xE, yE), Position(xS, yS).distanceTo(origin))
@@ -63,10 +63,10 @@ class Day9Test {
             @ParameterizedTest(name = "from ({0}, {1}) to ({2}, {3})")
             @CsvSource(
                 delimiter = ',', textBlock =
-                """ 2,  0, 1,  0
-                -2, 0, -1, 0
-                0, 2, 0, 1
-                0, -2, 0, -1"""
+                """2, 0  ,  1, 0
+                  -2, 0  , -1, 0
+                   0, 2  ,  0, 1
+                   0,-2  ,  0,-1"""
             )
             fun `lateral step toward origin `(xS: Int, yS: Int, xE: Int, yE: Int) {
                 assertEquals(Position(xE, yE), Position(xS, yS).stepToward(origin))
@@ -75,14 +75,14 @@ class Day9Test {
             @ParameterizedTest(name = "from ({0}, {1}) to ({2}, {3})")
             @CsvSource(
                 delimiter = ',', textBlock =
-                """ 2,  1, 1,  0
-                -2, 1, -1, 0
-                2, -1, 1, 0
-                -2, -1, -1, 0
-                1, 2, 0, 1
-                -1, 2, 0, 1
-                1, -2, 0, -1
-                -1, -2, 0, -1"""
+                """2, 1  ,  1, 0
+                  -2, 1  , -1, 0
+                   2,-1  ,  1, 0
+                  -2,-1  , -1, 0
+                   1, 2  ,  0, 1
+                  -1, 2  ,  0, 1
+                   1,-2  ,  0,-1
+                  -1,-2  ,  0,-1"""
             )
             fun `diagonal step toward origin `(xS: Int, yS: Int, xE: Int, yE: Int) {
                 assertEquals(Position(xE, yE), Position(xS, yS).stepToward(origin))
@@ -96,14 +96,14 @@ class Day9Test {
             @CsvSource(
                 delimiter = ',', textBlock =
                 """ 0, 0
-                0, 1
-                0, -1
-                1, 0
-                1, 1
-                1, -1
-                -1, 0
-                -1, 1
-                -1, -1"""
+                    0, 1
+                    0,-1
+                    1, 0
+                    1, 1
+                    1,-1
+                   -1, 0
+                   -1, 1
+                   -1,-1"""
             )
             fun `touches origin`(x: Int, y: Int) =
                 assertTrue(Position(x, y).touches(origin))
@@ -112,13 +112,13 @@ class Day9Test {
             @CsvSource(
                 delimiter = ',', textBlock =
                 """ 0, 2
-                0, -2
-                2, 0
-                -2, 0
-                2, 1
-                2, -1
-                -2, 1
-                -2, -1"""
+                    0,-2
+                    2, 0
+                   -2, 0
+                    2, 1
+                    2,-1
+                   -2, 1
+                   -2,-1"""
             )
             fun `does not touch origin`(x: Int, y: Int) =
                 assertFalse(Position(x, y).touches(origin))
@@ -137,10 +137,10 @@ class Day9Test {
         @ParameterizedTest(name = "move({0}, {1}) -> ({2}, {3})")
         @CsvSource(
             delimiter = ',', textBlock =
-            """R, 3, 3, 0
-               U, 3, 0, 3
-               L, 4, -4, 0
-               D, 4, 0, -4"""
+            """R,3  ,  3, 0
+               U,3  ,  0, 3
+               L,4  , -4, 0
+               D,4  ,  0,-4"""
         )
         fun `move n steps`(dir: Direction, steps: Int, xE: Int, yE: Int) {
             head.move(dir, steps)
@@ -150,10 +150,10 @@ class Day9Test {
         @ParameterizedTest(name = "move({0}) -> ({1}, {2})")
         @CsvSource(
             delimiter = ',', textBlock =
-            """R, 1, 0
-               U, 0, 1
-               L, -1, 0
-               D, 0, -1"""
+            """R  ,  1, 0
+               U  ,  0, 1
+               L  , -1, 0
+               D  ,  0,-1"""
         )
         fun `move defaults to 1 step`(dir: Direction, xE: Int, yE: Int) {
             head.move(dir)
@@ -163,11 +163,11 @@ class Day9Test {
         @ParameterizedTest(name = "head moves {0}, tail ends at ({1}, {2})")
         @CsvSource(
             delimiter = ',', textBlock =
-            """RRRRUU, 4, 1
-               RRR, 2, 0
-               R, 0, 0
+            """RRRRUU   , 4, 1
+               RRR      , 2, 0
+               R        , 0, 0
                RRRUUDDLL, 2, 0
-               RRRUUDDL, 3, 1"""
+               RRRUUDDL , 3, 1"""
         )
         fun `tail maintains contact with head`(dirs: String, xE: Int, yE: Int) {
             dirs.toCharArray().forEach { head.move(valueOf(it.toString())) }
