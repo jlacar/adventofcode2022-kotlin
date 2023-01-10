@@ -298,6 +298,7 @@ class Day9alt(
 fun main() {
     Solution.report(
         Day9alt("Day9-sample.txt", 13, 1),
+        Day9alt("Day9-sample2.txt", 88, 36),
         Day9alt("Day9.txt", 6563, 2653),
     )
 }
