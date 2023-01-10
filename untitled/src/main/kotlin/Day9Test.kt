@@ -218,6 +218,7 @@ enum class Direction { R, L, U, D, NONE }
 data class Position(val x: Int, val y: Int) {
 
     operator fun plus(other: Position) = Position(this.x + other.x, this.y + other.y)
+    operator fun minus(other: Position) = Position(this.x - other.x, this.y - other.y)
 
     fun step(dir: Direction) = when (dir) {
         R -> this.copy(x = this.x + 1)
@@ -227,7 +228,7 @@ data class Position(val x: Int, val y: Int) {
         else -> this.copy()
     }
 
-    fun distanceTo(other: Position) = Position(other.x - this.x, other.y - this.y)
+    fun distanceTo(other: Position) = other - this
 
     fun touches(other: Position) = distanceTo(other).let { (dx, dy) ->
         abs(dx) <= 1 && abs(dy) <= 1
@@ -248,7 +249,7 @@ data class Position(val x: Int, val y: Int) {
 
 class Knot(val tail: Knot? = null) {
 
-    val visited = mutableListOf<Position>(Position(0, 0))
+    val visited = mutableListOf(Position(0, 0))
     val currentPosition get() = visited.last()
 
     fun move(dir: Direction, steps: Int = 1) = (1..steps).forEach { _ ->
