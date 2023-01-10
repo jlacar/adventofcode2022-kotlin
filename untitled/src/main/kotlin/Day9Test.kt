@@ -138,9 +138,9 @@ class Day9Test {
         @CsvSource(
             delimiter = ',', textBlock =
             """R, 3, 3, 0
-           U, 3, 0, 3
-           L, 4, -4, 0
-           D, 4, 0, -4"""
+               U, 3, 0, 3
+               L, 4, -4, 0
+               D, 4, 0, -4"""
         )
         fun `move n steps`(dir: Direction, steps: Int, xE: Int, yE: Int) {
             head.move(dir, steps)
@@ -151,9 +151,9 @@ class Day9Test {
         @CsvSource(
             delimiter = ',', textBlock =
             """R, 1, 0
-           U, 0, 1
-           L, -1, 0
-           D, 0, -1"""
+               U, 0, 1
+               L, -1, 0
+               D, 0, -1"""
         )
         fun `move defaults to 1 step`(dir: Direction, xE: Int, yE: Int) {
             head.move(dir)
@@ -164,15 +164,13 @@ class Day9Test {
         @CsvSource(
             delimiter = ',', textBlock =
             """RRRRUU, 4, 1
-           RRR, 2, 0
-           R, 0, 0
-           RRRUUDDLL, 2, 0
-           RRRUUDDL, 3, 1"""
+               RRR, 2, 0
+               R, 0, 0
+               RRRUUDDLL, 2, 0
+               RRRUUDDL, 3, 1"""
         )
         fun `tail maintains contact with head`(dirs: String, xE: Int, yE: Int) {
-            dirs.toCharArray().forEach { dir ->
-                head.move(Direction.valueOf(dir.toString()))
-            }
+            dirs.toCharArray().forEach { head.move(valueOf(it.toString())) }
             assertEquals(Position(xE, yE), tail.currentPosition)
         }
     }
