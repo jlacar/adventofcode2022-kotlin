@@ -232,7 +232,7 @@ class Knot(val tail: Knot? = null) {
 
 class Rope(knots: Int = 2) {
     val tail = Knot()
-    val head = (2..knots).fold(tail) { tail, _ -> Knot(tail) }
+    private val head = (2..knots).fold(tail) { tail, _ -> Knot(tail) }
 
     fun move(steps: List<String>) = steps.forEach {
         it.split(" ").let{ (dir, steps) ->
