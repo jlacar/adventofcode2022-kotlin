@@ -142,7 +142,6 @@ class Day9Test {
            RRRUUDDL, 3, 1""")
         fun `tail maintains contact with head`(dirs: String, xE: Int, yE: Int) {
             dirs.toCharArray().forEach { dir ->
-                println(dir)
                 head.move(Direction.valueOf(dir.toString()))
             }
             assertEquals(Position(xE, yE), tail.currentPosition)
