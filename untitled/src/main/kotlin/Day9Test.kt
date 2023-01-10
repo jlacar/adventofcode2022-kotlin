@@ -15,21 +15,17 @@ class Day9Test {
     inner class `Position functions` {
         @Nested
         inner class `step(Direction)` {
-            @Test
-            fun `R increases X by 1 `() =
-                assertEquals(Position(1, 0), Position(0, 0).step(R))
+            @ParameterizedTest(name = "origin.step({0}) -> ({1}, {2})")
+            @CsvSource(delimiter = ',', textBlock =
+                """R, 1, 0
+                L, -1, 0
+                U, 0, 1
+                D, 0, -1
+                NONE, 0, 0"""
+            )
+            fun `from origin, step`(direction: Direction, xE: Int, yE: Int) =
+                assertEquals(Position(xE, yE), origin.step(direction))
 
-            @Test
-            fun `L decreases X by 1 `() =
-                assertEquals(Position(0, 0), Position(1, 0).step(L))
-
-            @Test
-            fun `U increases Y by 1 `() =
-                assertEquals(Position(0, 1), Position(0, 0).step(U))
-
-            @Test
-            fun `D decreases Y by 1 `() =
-                assertEquals(Position(0, 0), Position(0, 1).step(D))
         }
 
         @Nested
