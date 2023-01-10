@@ -47,6 +47,19 @@ class Day9Test {
             fun `to origin from relative position `(dir: Direction, xE: Int, yE: Int) {
                 assertEquals(Position(xE, yE), origin.step(dir).distanceTo(origin))
             }
+
+            @ParameterizedTest(name = "({0}, {1}).distanceTo(origin) should be ({2}, {3})")
+            @CsvSource(
+                delimiter = ',', textBlock =
+                """3, 0, -3, 0
+                -3, 0, 3, 0
+                0, 3, 0, -3
+                0, -3, 0, 3
+                4, 5, -4, -5
+                -5, -4, 5, 4"""
+            )
+            fun `distanceTo relative to origin `(xS: Int, yS: Int, xE: Int, yE: Int) =
+                assertEquals(Position(xE, yE), Position(xS, yS).distanceTo(origin))
         }
 
         @Nested
@@ -120,6 +133,10 @@ class Day9Test {
     inner class `Knot functions` {
         private val tail = Knot()
         private val head = Knot(tail)
+
+        @Test
+        fun `new Knot starts at origin`() =
+            assertEquals(origin, Knot().currentPosition)
 
         @ParameterizedTest(name = "move({0}, {1}) -> ({2}, {3})")
         @CsvSource(
@@ -218,11 +235,14 @@ data class Position(val x: Int, val y: Int) {
 
     fun distanceTo(other: Position) = Position(other.x - this.x, other.y - this.y)
 
+    fun touches(other: Position) = distanceTo(other).let { (dx, dy) ->
+        abs(dx) <= 1 && abs(dy) <= 1
+    }
+
     fun stepToward(other: Position) = distanceTo(other).let { (dx, dy) ->
         this.step(direction(dx, R, L)).step(direction(dy, U, D))
     }
 
-    fun touches(other: Position) = distanceTo(other).let { (dx, dy) -> abs(dx) <= 1 && abs(dy) <= 1 }
     private fun direction(delta: Int, plus: Direction, minus: Direction) = when {
         delta > 0 -> plus
         delta < 0 -> minus
@@ -235,16 +255,15 @@ data class Position(val x: Int, val y: Int) {
 class Knot(val tail: Knot? = null) {
 
     val visited = mutableListOf<Position>(Position(0, 0))
-    val currentPosition
-        get() = visited.last()
+    val currentPosition get() = visited.last()
 
-    fun move(dir: Direction, steps: Int = 1) = (1..steps).forEach {
+    fun move(dir: Direction, steps: Int = 1) = (1..steps).forEach { _ ->
         visited.add(currentPosition.step(dir))
         tail?.maintainContact(this)
     }
 
     private fun maintainContact(other: Knot) {
-        if (this.currentPosition.touches(other.currentPosition)) return
+        if (currentPosition.touches(other.currentPosition)) return
         visited.add(currentPosition.stepToward(other.currentPosition))
         tail?.maintainContact(this)
     }
@@ -254,10 +273,11 @@ class Rope(knots: Int = 2) {
     val tail = Knot()
     private val head = (2..knots).fold(tail) { tail, _ -> Knot(tail) }
 
-    fun move(steps: List<String>) = steps.forEach {
-        it.split(" ").let { (dir, steps) ->
-            head.move(valueOf(dir), steps.toInt())
-        }
+    fun move(moves: List<String>): List<Position> {
+        moves.forEach {it.split(" ").let { (direction, steps) ->
+            head.move(valueOf(direction), steps.toInt())
+        }}
+        return head.visited.toList()
     }
 }
 
@@ -269,14 +289,14 @@ class Day9alt(
     override val day get() = 9
     override val source get() = "$fileName"
 
-    val moves = InputReader(fileName).lines()
+    private val allMoves = InputReader(fileName).lines()
 
     override fun part1() = Result(expected1, distinctPositionsVisitedByTail(Rope()))
 
     override fun part2() = Result(expected2, distinctPositionsVisitedByTail(Rope(10)))
 
     private fun distinctPositionsVisitedByTail(rope: Rope): Int {
-        rope.move(moves)
+        rope.move(allMoves)
         return rope.tail.visited.distinct().count()
     }
 }
