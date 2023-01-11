@@ -184,9 +184,10 @@ class Day9Test {
                ULL      ,-1, 1
                DLL      ,-1,-1
                LDRURUL  , 0, 0
+               RRRRU    , 3, 0
                RRRRUU   , 4, 1
-               RRRUUDDLL, 2, 0
-               RRRUUDDL , 3, 1"""
+               RRRUUDDL , 3, 1
+               RRRUUDDLL, 2, 0"""
         )
         fun `tail keeps up with head`(dirs: String, xE: Int, yE: Int) {
             dirs.toCharArray().forEach { head.move(valueOf(it.toString())) }
