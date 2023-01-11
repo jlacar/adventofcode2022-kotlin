@@ -277,9 +277,9 @@ class Knot(val tail: Knot? = null) {
         tail?.keepUpWith(this)
     }
 
-    private fun keepUpWith(other: Knot) {
-        if (currentPosition.touches(other.currentPosition)) return
-        visited.add(currentPosition.moveToward(other.currentPosition))
+    private fun keepUpWith(head: Knot) {
+        if (currentPosition.touches(head.currentPosition)) return
+        visited.add(currentPosition.moveToward(head.currentPosition))
         tail?.keepUpWith(this)
     }
 }
