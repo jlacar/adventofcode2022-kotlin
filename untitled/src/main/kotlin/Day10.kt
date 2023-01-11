@@ -12,8 +12,8 @@ class Day10(
 
     override fun part1() = PendingResult // Result(expected1, signalStrengths() sum())
 
-    private fun signalStrengths(): MutableList<Int> {
-//        var register = 1
+    private fun signalStrengths(): List<Int> {
+        val register = mutableListOf(1)
 //        program.foldIndexed(mutableListOf(1)) { i, signalStrengths, line ->
 //            when {
 //                line.startsWith("noop")

@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    testImplementation("org.amshove.kluent:kluent:1.72")
     testImplementation(kotlin("test"))
 }
 

@@ -44,7 +44,7 @@ class Day5X(val input: List<String> = """
     }
 
     private fun perform(operation: String, stacks: List<Stack<Char>>) {
-        val (unused, count, frStack, toStack) = operation.split("""move | from | to """.toRegex())
+        val (_, count, frStack, toStack) = operation.split("""move | from | to """.toRegex())
         (   1..count.toInt()).forEach { _ -> stacks[toStack.toInt()-1].push(stacks[frStack.toInt()-1].pop()) }
     }
     private fun perform1(operation: String, stacks: List<Stack<Char>>) {

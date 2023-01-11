@@ -59,7 +59,7 @@ class Day9Test {
         }
 
         @Nested
-        inner class `stepToward(Position)` {
+        inner class `moveToward(Position)` {
             @ParameterizedTest(name = "from ({0}, {1}) to ({2}, {3})")
             @CsvSource(
                 delimiter = ',', textBlock =
@@ -68,8 +68,8 @@ class Day9Test {
                    0, 2  ,  0, 1
                    0,-2  ,  0,-1"""
             )
-            fun `lateral step toward origin `(xS: Int, yS: Int, xE: Int, yE: Int) {
-                assertEquals(Position(xE, yE), Position(xS, yS).stepToward(origin))
+            fun `lateral move toward origin `(xS: Int, yS: Int, xE: Int, yE: Int) {
+                assertEquals(Position(xE, yE), Position(xS, yS).moveToward(origin))
             }
 
             @ParameterizedTest(name = "from ({0}, {1}) to ({2}, {3})")
@@ -84,8 +84,8 @@ class Day9Test {
                    1,-2  ,  0,-1
                   -1,-2  ,  0,-1"""
             )
-            fun `diagonal step toward origin `(xS: Int, yS: Int, xE: Int, yE: Int) {
-                assertEquals(Position(xE, yE), Position(xS, yS).stepToward(origin))
+            fun `diagonal move toward origin `(xS: Int, yS: Int, xE: Int, yE: Int) {
+                assertEquals(Position(xE, yE), Position(xS, yS).moveToward(origin))
             }
         }
 
@@ -163,13 +163,32 @@ class Day9Test {
         @ParameterizedTest(name = "head moves {0}, tail ends at ({1}, {2})")
         @CsvSource(
             delimiter = ',', textBlock =
-            """RRRRUU   , 4, 1
+            """R        , 0, 0
+               L        , 0, 0
+               U        , 0, 0
+               D        , 0, 0
+               RR       , 1, 0
                RRR      , 2, 0
-               R        , 0, 0
+               LL       ,-1, 0
+               LLL      ,-2, 0
+               UU       , 0, 1
+               UUU      , 0, 2
+               DD       , 0,-1
+               DDD      , 0,-2
+               RUU      , 1, 1
+               RDD      , 1,-1
+               LUU      ,-1, 1
+               LDD      ,-1,-1
+               URR      , 1, 1
+               DRR      , 1,-1
+               ULL      ,-1, 1
+               DLL      ,-1,-1
+               LDRURUL  , 0, 0
+               RRRRUU   , 4, 1
                RRRUUDDLL, 2, 0
                RRRUUDDL , 3, 1"""
         )
-        fun `tail maintains contact with head`(dirs: String, xE: Int, yE: Int) {
+        fun `tail keeps up with head`(dirs: String, xE: Int, yE: Int) {
             dirs.toCharArray().forEach { head.move(valueOf(it.toString())) }
             assertEquals(Position(xE, yE), tail.currentPosition)
         }
@@ -234,7 +253,7 @@ data class Position(val x: Int, val y: Int) {
         abs(dx) <= 1 && abs(dy) <= 1
     }
 
-    fun stepToward(other: Position) = distanceTo(other).let { (dx, dy) ->
+    fun moveToward(other: Position) = distanceTo(other).let { (dx, dy) ->
         this.step(direction(dx, R, L)).step(direction(dy, U, D))
     }
 
@@ -254,13 +273,13 @@ class Knot(val tail: Knot? = null) {
 
     fun move(dir: Direction, steps: Int = 1) = (1..steps).forEach { _ ->
         visited.add(currentPosition.step(dir))
-        tail?.maintainContact(this)
+        tail?.keepUpWith(this)
     }
 
-    private fun maintainContact(other: Knot) {
+    private fun keepUpWith(other: Knot) {
         if (currentPosition.touches(other.currentPosition)) return
-        visited.add(currentPosition.stepToward(other.currentPosition))
-        tail?.maintainContact(this)
+        visited.add(currentPosition.moveToward(other.currentPosition))
+        tail?.keepUpWith(this)
     }
 }
 
