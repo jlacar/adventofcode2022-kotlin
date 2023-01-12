@@ -10,26 +10,30 @@ class Day10(
 
     private val sampleCycles = (20..220 step 40).toList()
 
-    override fun part1() = PendingResult // Result(expected1, signalStrengths() sum())
+    override fun part1() = Result(expected1, sampleSignalStrengths().sum())
 
-    private fun signalStrengths(): List<Int> {
-        val register = mutableListOf(1)
-//        program.foldIndexed(mutableListOf(1)) { i, signalStrengths, line ->
-//            when {
-//                line.startsWith("noop")
-//            }
-//        }
-        return mutableListOf()
+    private fun sampleSignalStrengths(): List<Int> = registerValues().mapIndexed { i, x ->
+        if (sampleCycles.contains(i + 1)) x * (i + 1) else 0
     }
+
+    private fun registerValues(): List<Int> =
+        mutableListOf(1).also { values ->
+            program.forEach { instruction ->
+                instruction.split(" ").let { parts ->
+                    values.add(values.last())
+                    if (parts.size == 2) {
+                        values.add(values.last() + parts[1].toInt())
+                    }
+                }
+            }
+        }.toList()
 
     override fun part2() = PendingResult
 }
 
-
 fun main() {
-//    Solution.report(
-//        Day10("Day10-sample.txt", 13140, 0),
-//        Day10("Day10.txt", 0, 0)
-//    )
-
+    Solution.report(
+        Day10("Day10-sample.txt", 13140, 0),
+        Day10("Day10.txt", 11960, 0)
+    )
 }
