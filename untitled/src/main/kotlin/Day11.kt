@@ -53,12 +53,12 @@ class Day11(
 
         private fun opFun(s: String): (Int) -> Int {
             val (_, op, x) = s.trim().split(" = ")[1].split(" ")
-            fun multOp(num: Int) = { item: Int -> item * num }
-            fun addOp(num: Int) = { item: Int -> item + num }
+            fun multiplyBy(num: Int) = { item: Int -> item * num }
+            fun increaseBy(num: Int) = { item: Int -> item + num }
             return when {
                 x == "old" -> { num -> num * num }
-                op == "+" -> addOp(x.toInt())
-                else -> multOp(x.toInt())
+                op == "+" -> increaseBy(x.toInt())
+                else -> multiplyBy(x.toInt())
             }
         }
 
