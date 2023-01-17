@@ -1,6 +1,4 @@
-import java.math.BigInteger
-
-typealias WorryFunction = (BigInteger) -> BigInteger
+typealias WorryFunction = (Long) -> Long
 
 class Day11(
     private val fileName: String,
@@ -10,66 +8,69 @@ class Day11(
     override val day: Int get() = 11
     override val source: String get() = "$fileName"
 
-    private val monkeyConfig = InputReader(fileName).lines()
-
-    private fun parse(lines: List<String>) = lines.chunked(7).map { config -> Monkey(config) }
+    private fun monkeyTroop() = InputReader(fileName).lines().chunked(7)
+        .map { config -> Monkey.parse(config) }
 
     override fun part1(): Result {
-        val monkeys = parse(monkeyConfig)
-        return Result(expected1, monkeyBusiness(20, monkeys) { it / 3.toBigInteger() })
+        val monkeys = monkeyTroop()
+        monkeys.runRounds(20) { it / 3L }
+        return Result(expected1, monkeys.business())
     }
 
     override fun part2(): Result {
-        val monkeys = parse(monkeyConfig)
-        val moduloProduct = monkeys.map { it.modulo }.fold(BigInteger.ONE) { acc, n -> acc.multiply(n) }
-        return Result(expected2, monkeyBusiness(10000, monkeys) { it.remainder(moduloProduct) })
+        val monkeys = monkeyTroop()
+        val divisorProduct = monkeys.map { it.divisor }.reduce(Long::times)
+        monkeys.runRounds(10000) { it % divisorProduct }
+        return Result(expected2, monkeys.business() )
     }
 
-    private fun monkeyBusiness(rounds: Int, monkeys: List<Monkey>, manageWorry: WorryFunction): Long {
+    private fun List<Monkey>.runRounds(rounds: Int, manageWorry: WorryFunction) {
         repeat(rounds) {
-            monkeys.forEach { monkey -> monkey.takeTurn(monkeys, manageWorry) }
+            this.forEach { monkey -> monkey.takeTurn(this, manageWorry) }
         }
-        val (top1, top2) = monkeys.map { it.inspections }.sortedDescending().take(2)
+    }
+    private fun List<Monkey>.business(): Long {
+        val (top1, top2) = this.map { it.inspections }.sortedDescending().take(2)
         return top1.toLong() * top2.toLong()
     }
 
-    class Monkey(config: List<String>) {
+    class Monkey(
+        private val items: MutableList<Item>,
+        val divisor: Long,
+        val operation: WorryFunction,
+        val throwTo: (Long) -> Int
+    ) {
         var inspections = 0
-        val modulo: BigInteger
 
-        private val items: MutableList<Item>
-        private val operation: WorryFunction
-        private val throwTo: (BigInteger) -> Int
+        companion object {
+            fun parse(config: List<String>): Monkey {
+                val items = startingItems(config[1])
+                val divisor = config[3].substringAfterLast(" ").toLong()
+                val trueMonkey = config[4].substringAfterLast(" ").toInt()
+                val falseMonkey = config[5].substringAfterLast(" ").toInt()
+                return Monkey(
+                    items,
+                    divisor,
+                    operation = opFun(config[2]),
+                    throwTo = ({ level -> if (level % divisor == 0L) trueMonkey else falseMonkey })
+                )
+            }
+            
+            private fun opFun(s: String): WorryFunction {
+                val value = s.substringAfterLast(" ")
+                return when {
+                    value == "old" -> ({ level -> level * level })
+                    s.contains("+") -> ({ it + value.toLong() })
+                    else -> ({ it * value.toLong() })
+                }
+            }
 
-        init {
-            items = startingItems(config[1])
-            operation = opFun(config[2])
-            modulo = config[3].trim().split(" ")[3].toBigInteger()
-            throwTo = throwFun(modulo, config[4], config[5])
-        }
-
-        private fun startingItems(s: String) = mutableListOf<Item>().apply {
-            addAll(s.trim().split(": ")[1].split(", ").map { Item(it.toBigInteger()) })
-        }
-
-        private fun catch(item: Item) = items.add(item)
-
-        private fun opFun(s: String): WorryFunction {
-            val (_, op, n) = s.trim().split(" = ")[1].split(" ")
-            fun increaseBy(num: BigInteger) = { item: BigInteger -> item.add(num) }
-            fun multiplyBy(num: BigInteger) = { item: BigInteger -> item.multiply(num) }
-            return when {
-                n == "old" -> { item -> item.multiply(item) }
-                op == "+" -> increaseBy(n.toBigInteger())
-                else -> multiplyBy(n.toBigInteger())
+            private fun startingItems(s: String) = mutableListOf<Item>().apply {
+                addAll(s.trim().split(": ")[1].split(", ").map { Item(it.toLong()) })
             }
         }
-
-        private fun throwFun(divisor: BigInteger, toTrue: String, toFalse: String): (BigInteger) -> Int {
-            val monkeyTrue = toTrue.trim().split(" ")[5].toInt()
-            val monkeyFalse = toFalse.trim().split(" ")[5].toInt()
-            return { item -> if (item.remainder(divisor) == BigInteger.ZERO) monkeyTrue else monkeyFalse }
-        }
+        
+        private fun catch(item: Item) = items.add(item)
 
         fun takeTurn(otherMonkeys: List<Monkey>, manageWorry: WorryFunction) {
             items.forEach { item ->
@@ -81,7 +82,7 @@ class Day11(
         }
     }
 
-    data class Item(val worryLevel: BigInteger) {
+    data class Item(val worryLevel: Long) {
         fun inspect(increase: WorryFunction, manage: WorryFunction) = Item(manage(increase(worryLevel)))
     }
 
