@@ -26,11 +26,12 @@ class Day11(
 
     private fun List<Monkey>.runRounds(rounds: Int, manageWorry: WorryFunction) {
         repeat(rounds) {
-            this.forEach { monkey -> monkey.takeTurn(this, manageWorry) }
+            forEach { monkey -> monkey.takeTurn(this, manageWorry) }
         }
     }
+
     private fun List<Monkey>.business(): Long {
-        val (top1, top2) = this.map { it.inspections }.sortedDescending().take(2)
+        val (top1, top2) = map { it.inspections }.sortedDescending().take(2)
         return top1.toLong() * top2.toLong()
     }
 
@@ -38,7 +39,7 @@ class Day11(
         private val items: MutableList<Item>,
         val divisor: Long,
         val operation: WorryFunction,
-        val throwTo: (Long) -> Int
+        val throwTo: (List<Monkey>, Item) -> Unit
     ) {
         var inspections = 0
 
@@ -52,10 +53,16 @@ class Day11(
                     items,
                     divisor,
                     operation = opFun(config[2]),
-                    throwTo = ({ level -> if (level % divisor == 0L) trueMonkey else falseMonkey })
+                    throwTo = throwFun(divisor, trueMonkey, falseMonkey)
                 )
             }
-            
+
+            private fun throwFun(divisor: Long, trueMonkey: Int, falseMonkey: Int): (List<Monkey>, Item) -> Unit =
+                { troop, item ->
+                    val toMonkey = if (item.worryLevel % divisor == 0L) trueMonkey else falseMonkey
+                    troop[toMonkey].catch(item)
+                }
+
             private fun opFun(s: String): WorryFunction {
                 val value = s.substringAfterLast(" ")
                 return when {
@@ -72,11 +79,8 @@ class Day11(
         
         private fun catch(item: Item) = items.add(item)
 
-        fun takeTurn(otherMonkeys: List<Monkey>, manageWorry: WorryFunction) {
-            items.forEach { item ->
-                val inspectedItem = item.inspect(operation, manageWorry)
-                otherMonkeys[throwTo(inspectedItem.worryLevel)].catch(inspectedItem)
-            }
+        fun takeTurn(troop: List<Monkey>, manageWorry: WorryFunction) {
+            items.forEach { item -> throwTo(troop, item.inspect(operation, manageWorry)) }
             inspections += items.size
             items.clear()
         }
