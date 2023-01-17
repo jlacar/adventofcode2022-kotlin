@@ -11,6 +11,8 @@ import java.math.BigInteger
  * Other approach?: https://medium.com/@datasciencedisciple/advent-of-code-2022-in-python-day-11-5832b8f25c21
  */
 
+typealias WorryTransform <T> = (T) -> T
+
 class Day11(
     private val fileName: String,
     private val expected1: Long,
@@ -42,7 +44,7 @@ class Day11(
         return Result(expected2, monkeyBusiness(10000, monkeys) { it.remainder(modulo) })
     }
 
-    private fun monkeyBusiness(rounds: Int, monkeys: List<Monkey>, manageWorry: (BigInteger) -> BigInteger): Long {
+    private fun monkeyBusiness(rounds: Int, monkeys: List<Monkey>, manageWorry: WorryTransform<BigInteger>): Long {
         repeat (rounds) {
             monkeys.forEach { monkey -> monkey.throwItemsToOther(monkeys, manageWorry) }
         }
@@ -55,7 +57,7 @@ class Day11(
         val modulo: BigInteger
 
         private val items: MutableList<BigInteger>
-        private val operation: (BigInteger) -> BigInteger
+        private val operation: WorryTransform<BigInteger>
         private val throwTo: (BigInteger) -> Int
 
         init {
@@ -71,7 +73,7 @@ class Day11(
 
         private fun catch(item: BigInteger) = items.add(item)
 
-        private fun opFun(s: String): (BigInteger) -> BigInteger {
+        private fun opFun(s: String): WorryTransform<BigInteger> {
             val (_, op, n) = s.trim().split(" = ")[1].split(" ")
             fun increaseBy(num: BigInteger) = { item: BigInteger -> item.add(num) }
             fun multiplyBy(num: BigInteger) = { item: BigInteger -> item.multiply(num) }
@@ -88,7 +90,7 @@ class Day11(
             return { item -> if (item.remainder(divisor) == BigInteger.ZERO) monkeyTrue else monkeyFalse }
         }
 
-        fun throwItemsToOther(otherMonkeys: List<Monkey>, manageWorry: (BigInteger) -> BigInteger) {
+        fun throwItemsToOther(otherMonkeys: List<Monkey>, manageWorry: WorryTransform<BigInteger>) {
             items.forEach { worryLevel ->
                 val newLevel = manageWorry(operation(worryLevel))
                 otherMonkeys[throwTo(newLevel)].catch(newLevel)
@@ -97,6 +99,12 @@ class Day11(
             items.clear()
         }
     }
+
+    data class Item(val worryLevel: BigInteger) {
+        fun inspect(operation: WorryTransform<BigInteger>, manageWorry: WorryTransform<BigInteger>) =
+            Item(manageWorry(operation(worryLevel)))
+    }
+
 }
 
 fun main() {
