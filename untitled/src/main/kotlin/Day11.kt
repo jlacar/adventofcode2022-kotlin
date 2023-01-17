@@ -1,35 +1,16 @@
 import java.math.BigInteger
 
-/**
- * The trick to part 2 solution is finding how to better manage the worry level.
- * Had to cheat on this one: the magic incantation is to multiply all the
- * "divisibly by" numbers and use it as the way to decrease the worry level.
- * Instead of integer division by 3 as in part 1, use level.remainder(n)
- *
- * Modulo trick info found on Reddit
- * Same approach: (Rust): https://fasterthanli.me/series/advent-of-code-2022/part-11#part-2
- * Other approach?: https://medium.com/@datasciencedisciple/advent-of-code-2022-in-python-day-11-5832b8f25c21
- */
-
-typealias WorryTransform <T> = (T) -> T
+typealias WorryFunction = (BigInteger) -> BigInteger
 
 class Day11(
     private val fileName: String,
     private val expected1: Long,
-    private val expected2: Long) : Solution
-{
+    private val expected2: Long
+) : Solution {
     override val day: Int get() = 11
     override val source: String get() = "$fileName"
 
     private val monkeyConfig = InputReader(fileName).lines()
-
-    /*
-       DEVELOPER NOTE - had a heck of a time figuring out why this was giving different results for what
-       looked like the same exact code, except the working one was not wrapped in a class. Turns out it
-       was a wrong assumption: I thought part 2 started in a clean state when in fact it was starting in
-       the state that part 1 ended in for monkeys. Had to change so the input is parsed at the start of
-       each part solution and you have the monkeys all at the correct start state.
-     */
 
     private fun parse(lines: List<String>) = lines.chunked(7).map { config -> Monkey(config) }
 
@@ -40,13 +21,13 @@ class Day11(
 
     override fun part2(): Result {
         val monkeys = parse(monkeyConfig)
-        val modulo = monkeys.map { it.modulo }.fold(BigInteger.ONE) { acc, n -> acc.multiply(n) }
-        return Result(expected2, monkeyBusiness(10000, monkeys) { it.remainder(modulo) })
+        val moduloProduct = monkeys.map { it.modulo }.fold(BigInteger.ONE) { acc, n -> acc.multiply(n) }
+        return Result(expected2, monkeyBusiness(10000, monkeys) { it.remainder(moduloProduct) })
     }
 
-    private fun monkeyBusiness(rounds: Int, monkeys: List<Monkey>, manageWorry: WorryTransform<BigInteger>): Long {
-        repeat (rounds) {
-            monkeys.forEach { monkey -> monkey.throwItemsToOther(monkeys, manageWorry) }
+    private fun monkeyBusiness(rounds: Int, monkeys: List<Monkey>, manageWorry: WorryFunction): Long {
+        repeat(rounds) {
+            monkeys.forEach { monkey -> monkey.takeTurn(monkeys, manageWorry) }
         }
         val (top1, top2) = monkeys.map { it.inspections }.sortedDescending().take(2)
         return top1.toLong() * top2.toLong()
@@ -56,8 +37,8 @@ class Day11(
         var inspections = 0
         val modulo: BigInteger
 
-        private val items: MutableList<BigInteger>
-        private val operation: WorryTransform<BigInteger>
+        private val items: MutableList<Item>
+        private val operation: WorryFunction
         private val throwTo: (BigInteger) -> Int
 
         init {
@@ -67,13 +48,13 @@ class Day11(
             throwTo = throwFun(modulo, config[4], config[5])
         }
 
-        private fun startingItems(s: String) = mutableListOf<BigInteger>().apply {
-            addAll(s.trim().split(": ")[1].split(", ").map { it.toBigInteger() })
+        private fun startingItems(s: String) = mutableListOf<Item>().apply {
+            addAll(s.trim().split(": ")[1].split(", ").map { Item(it.toBigInteger()) })
         }
 
-        private fun catch(item: BigInteger) = items.add(item)
+        private fun catch(item: Item) = items.add(item)
 
-        private fun opFun(s: String): WorryTransform<BigInteger> {
+        private fun opFun(s: String): WorryFunction {
             val (_, op, n) = s.trim().split(" = ")[1].split(" ")
             fun increaseBy(num: BigInteger) = { item: BigInteger -> item.add(num) }
             fun multiplyBy(num: BigInteger) = { item: BigInteger -> item.multiply(num) }
@@ -90,10 +71,10 @@ class Day11(
             return { item -> if (item.remainder(divisor) == BigInteger.ZERO) monkeyTrue else monkeyFalse }
         }
 
-        fun throwItemsToOther(otherMonkeys: List<Monkey>, manageWorry: WorryTransform<BigInteger>) {
-            items.forEach { worryLevel ->
-                val newLevel = manageWorry(operation(worryLevel))
-                otherMonkeys[throwTo(newLevel)].catch(newLevel)
+        fun takeTurn(otherMonkeys: List<Monkey>, manageWorry: WorryFunction) {
+            items.forEach { item ->
+                val inspectedItem = item.inspect(operation, manageWorry)
+                otherMonkeys[throwTo(inspectedItem.worryLevel)].catch(inspectedItem)
             }
             inspections += items.size
             items.clear()
@@ -101,8 +82,7 @@ class Day11(
     }
 
     data class Item(val worryLevel: BigInteger) {
-        fun inspect(operation: WorryTransform<BigInteger>, manageWorry: WorryTransform<BigInteger>) =
-            Item(manageWorry(operation(worryLevel)))
+        fun inspect(increase: WorryFunction, manage: WorryFunction) = Item(manage(increase(worryLevel)))
     }
 
 }
@@ -114,3 +94,24 @@ fun main() {
         Day11("Day11-alt.txt", 108240L, 25712998901L)
     )
 }
+
+/*==================
+ * NOTES
+ *
+ * The trick to part 2 is finding how to better manage the worry level. The problem is that
+ * the worry levels get exponentially larger as they keep transforming upon inspection.
+ * Part 1 strategy was to divide by 3. Part 2 required you to find a different way.
+ *
+ * I had to cheat on this one: the magic incantation is to multiply all the "divisible by" numbers
+ * of all the monkeys and mod the worry level with it. That is, newlevel = levelAfterInspection % modProduct.
+ *
+ * Found the Modulo trick info on Reddit.
+ * Same approach: (Rust): https://fasterthanli.me/series/advent-of-code-2022/part-11#part-2
+ * Other approach?: https://medium.com/@datasciencedisciple/advent-of-code-2022-in-python-day-11-5832b8f25c21
+ *
+ * Also had a heck of a time figuring out why this was giving different results for what looked like the same
+ * code as Day11-alt.kt code, except that one was not wrapped in a class. Problem was a wrong assumption: I
+ * thought part 2 started in a clean state when in fact it was starting in the state that part 1 ended in for
+ * monkey items. Had to parse the input at the start of each part solution to correctly initialize the items
+ * each monkey has at the start.
+ */
