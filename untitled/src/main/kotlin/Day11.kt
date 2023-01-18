@@ -8,8 +8,9 @@ class Day11(
     override val day: Int get() = 11
     override val source: String get() = "$fileName"
 
-    private fun monkeyTroop() = InputReader(fileName).lines().chunked(7)
-        .map { config -> Monkey.parse(config) }
+    private val input = InputReader(fileName).lines()
+
+    private fun monkeyTroop() = input.chunked(7).map { config -> Monkey.parse(config) }
 
     override fun part1(): Result {
         val monkeys = monkeyTroop()
@@ -31,21 +32,21 @@ class Day11(
     }
 
     private fun List<Monkey>.business(): Long {
-        val (top1, top2) = map { it.inspections }.sortedDescending().take(2)
-        return top1.toLong() * top2.toLong()
+        val (first, second) = map { it.inspections }.sortedDescending().take(2)
+        return first.toLong() * second.toLong()
     }
 
     class Monkey(
         private val items: MutableList<Item>,
         val divisor: Long,
         val operation: WorryFunction,
-        val throwTo: (List<Monkey>, Item) -> Unit
+        val pickTarget: (Long) -> Int
     ) {
         var inspections = 0
 
         companion object {
             fun parse(config: List<String>): Monkey {
-                val items = startingItems(config[1])
+                val items = startingItems(config[1].substringAfter(": "))
                 val divisor = config[3].substringAfterLast(" ").toLong()
                 val trueMonkey = config[4].substringAfterLast(" ").toInt()
                 val falseMonkey = config[5].substringAfterLast(" ").toInt()
@@ -53,15 +54,13 @@ class Day11(
                     items,
                     divisor,
                     operation = opFun(config[2]),
-                    throwTo = throwFun(divisor, trueMonkey, falseMonkey)
+                    pickTarget = ({ worry -> if (worry % divisor == 0L) trueMonkey else falseMonkey})
                 )
             }
 
-            private fun throwFun(divisor: Long, trueMonkey: Int, falseMonkey: Int): (List<Monkey>, Item) -> Unit =
-                { troop, item ->
-                    val toMonkey = if (item.worryLevel % divisor == 0L) trueMonkey else falseMonkey
-                    troop[toMonkey].catch(item)
-                }
+            private fun startingItems(itemCsv: String) = mutableListOf<Item>().apply {
+                addAll(itemCsv.split(", ").map { Item(it.toLong()) })
+            }
 
             private fun opFun(s: String): WorryFunction {
                 val value = s.substringAfterLast(" ")
@@ -71,25 +70,26 @@ class Day11(
                     else -> ({ it * value.toLong() })
                 }
             }
-
-            private fun startingItems(s: String) = mutableListOf<Item>().apply {
-                addAll(s.trim().split(": ")[1].split(", ").map { Item(it.toLong()) })
-            }
         }
         
-        private fun catch(item: Item) = items.add(item)
+        fun catch(item: Item) = items.add(item)
 
         fun takeTurn(troop: List<Monkey>, manageWorry: WorryFunction) {
-            items.forEach { item -> throwTo(troop, item.inspect(operation, manageWorry)) }
+            items.forEach { item ->
+                item.inspect(operation, manageWorry).also { it.throwTo(troop, pickTarget) }
+            }
             inspections += items.size
             items.clear()
         }
     }
 
     data class Item(val worryLevel: Long) {
-        fun inspect(increase: WorryFunction, manage: WorryFunction) = Item(manage(increase(worryLevel)))
-    }
+        fun inspect(increase: WorryFunction, manage: WorryFunction) =
+            Item(manage(increase(worryLevel)))
 
+        fun throwTo(troop: List<Monkey>, targetFor: (Long) -> Int) =
+            troop[targetFor(worryLevel)].catch(this)
+    }
 }
 
 fun main() {
