@@ -39,10 +39,10 @@ class Day11(
     class Item(val worryLevel: Long)
 
     class Monkey(
-        private val items: MutableList<Item>,
         val divisor: Long,
-        val operation: WorryFunction,
-        val pickTarget: (Item) -> Int
+        private val items: MutableList<Item>,
+        private val operation: WorryFunction,
+        private val pickTarget: (Item) -> Int
     ) {
         var inspections = 0
 
@@ -53,8 +53,8 @@ class Day11(
                 val trueMonkey = config[4].substringAfterLast(" ").toInt()
                 val falseMonkey = config[5].substringAfterLast(" ").toInt()
                 return Monkey(
-                    items,
                     divisor,
+                    items,
                     operation = opFun(config[2].substringAfter("= old ")),
                     pickTarget = ({ item -> if (item.worryLevel % divisor == 0L) trueMonkey else falseMonkey})
                 )
