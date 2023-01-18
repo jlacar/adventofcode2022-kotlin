@@ -36,6 +36,8 @@ class Day11(
         return first.toLong() * second.toLong()
     }
 
+    data class Item(val worryLevel: Long)
+
     class Monkey(
         private val items: MutableList<Item>,
         val divisor: Long,
@@ -71,25 +73,22 @@ class Day11(
                 }
             }
         }
-        
+
         fun catch(item: Item) = items.add(item)
 
         fun takeTurn(troop: List<Monkey>, manageWorry: WorryFunction) {
             items.forEach { item ->
-                item.inspect(operation, manageWorry).also { it.throwTo(troop, pickTarget) }
+                inspect(item, manageWorry).also { throwTo(troop, it) }
             }
             inspections += items.size
             items.clear()
         }
+
+        private fun inspect(item: Item, manageWorry: WorryFunction) = Item(manageWorry(operation(item.worryLevel)))
+
+        private fun throwTo(troop: List<Monkey>, item: Item) = troop[pickTarget(item.worryLevel)].catch(item)
     }
 
-    data class Item(val worryLevel: Long) {
-        fun inspect(increase: WorryFunction, manage: WorryFunction) =
-            Item(manage(increase(worryLevel)))
-
-        fun throwTo(troop: List<Monkey>, targetFor: (Long) -> Int) =
-            troop[targetFor(worryLevel)].catch(this)
-    }
 }
 
 fun main() {
