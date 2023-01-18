@@ -36,7 +36,7 @@ class Day11(
         return first.toLong() * second.toLong()
     }
 
-    data class Item(val worryLevel: Long)
+    class Item(val worryLevel: Long)
 
     class Monkey(
         private val items: MutableList<Item>,
@@ -55,7 +55,7 @@ class Day11(
                 return Monkey(
                     items,
                     divisor,
-                    operation = opFun(config[2]),
+                    operation = opFun(config[2].substringAfter("= old ")),
                     pickTarget = ({ worry -> if (worry % divisor == 0L) trueMonkey else falseMonkey})
                 )
             }
@@ -64,25 +64,22 @@ class Day11(
                 addAll(itemCsv.split(", ").map { Item(it.toLong()) })
             }
 
-            private fun opFun(s: String): WorryFunction {
-                val value = s.substringAfterLast(" ")
-                return when {
-                    value == "old" -> ({ level -> level * level })
-                    s.contains("+") -> ({ it + value.toLong() })
+            private fun opFun(s: String): WorryFunction = s.substringAfter(" ").let { value ->
+                when {
+                    value == "old" -> ({ it * it })
+                    s.startsWith("+") -> ({ it + value.toLong() })
                     else -> ({ it * value.toLong() })
                 }
             }
         }
 
-        fun catch(item: Item) = items.add(item)
-
         fun takeTurn(troop: List<Monkey>, manageWorry: WorryFunction) {
-            items.forEach { item ->
-                inspect(item, manageWorry).also { throwTo(troop, it) }
-            }
+            items.forEach { inspect(it, manageWorry).also { item -> throwTo(troop, item) } }
             inspections += items.size
             items.clear()
         }
+
+        private fun catch(item: Item) = items.add(item)
 
         private fun inspect(item: Item, manageWorry: WorryFunction) = Item(manageWorry(operation(item.worryLevel)))
 
