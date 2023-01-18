@@ -42,7 +42,7 @@ class Day11(
         private val items: MutableList<Item>,
         val divisor: Long,
         val operation: WorryFunction,
-        val pickTarget: (Long) -> Int
+        val pickTarget: (Item) -> Int
     ) {
         var inspections = 0
 
@@ -56,7 +56,7 @@ class Day11(
                     items,
                     divisor,
                     operation = opFun(config[2].substringAfter("= old ")),
-                    pickTarget = ({ worry -> if (worry % divisor == 0L) trueMonkey else falseMonkey})
+                    pickTarget = ({ item -> if (item.worryLevel % divisor == 0L) trueMonkey else falseMonkey})
                 )
             }
 
@@ -83,7 +83,7 @@ class Day11(
 
         private fun inspect(item: Item, manageWorry: WorryFunction) = Item(manageWorry(operation(item.worryLevel)))
 
-        private fun throwTo(troop: List<Monkey>, item: Item) = troop[pickTarget(item.worryLevel)].catch(item)
+        private fun throwTo(troop: List<Monkey>, item: Item) = troop[pickTarget(item)].catch(item)
     }
 
 }
