@@ -1,7 +1,7 @@
 class Day3(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 3 - Rucksack Reorg ($fileName)"
 
-    private val input = InputReader(fileName).lines()
+    private val input = InputReader(fileName).lines
     override fun part1() = input.sumOf { ruckPriority(it) }
     override fun part2() = input.chunked(3).sumOf { groupBadgePriority(it) }
 }

@@ -1,7 +1,7 @@
 class Day5(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 5 - Supply Stacks ($fileName)"
 
-    private val input = InputReader(fileName).lines().filter { it.isNotBlank() }
+    private val input = InputReader(fileName).lines.filter { it.isNotBlank() }
     override fun part1() = Day5X(input).solve()
     override fun part2() = Day5X(input).solve2()
 }

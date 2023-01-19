@@ -1,7 +1,7 @@
 class Day4(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 4 - Camp Cleanup ($fileName)"
 
-    private val input = InputReader(fileName).lines()
+    private val input = InputReader(fileName).lines
     override fun part1() = input.count { hasFullContainment(it) }
     override fun part2() = input.count { hasOverlap(it) }
 }
