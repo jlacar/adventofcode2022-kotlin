@@ -19,7 +19,7 @@ class Day10(private val fileName: String) : AocSolution
 
     override fun part2() = crtDisplay()
 
-    fun crtDisplay(): List<String> {
+    private fun crtDisplay(): List<String> {
         val crt = Array(6) { CharArray(40) { '.' } }
         registerValues.take(240).forEachIndexed { i, center ->
             val pixel = i % 40
