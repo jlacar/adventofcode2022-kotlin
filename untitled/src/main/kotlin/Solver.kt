@@ -41,6 +41,7 @@ class SolutionRunner(private val solution: AocSolution) {
 infix fun AocSolution.shouldHave(fn: SolutionRunner.() -> Unit) {
     val runner = SolutionRunner(this)
     runner.fn()
+    println()
 }
 
 fun main() {
