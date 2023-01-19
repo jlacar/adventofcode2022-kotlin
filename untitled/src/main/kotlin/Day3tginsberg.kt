@@ -29,6 +29,7 @@ class Day3tginsberg(val fileName: String) : AocSolution {
     private fun List<String>.sharedItem(): Char =
         map { it.toSet() }
             .reduce { left, right -> left intersect right }
+            .also { assert(it.size == 1) }  // run with -ea VM option to enable
             .first()
 }
 
@@ -46,4 +47,3 @@ fun main() {
         part2() shouldBe 2681
     }
 }
-
