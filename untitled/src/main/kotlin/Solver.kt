@@ -3,7 +3,6 @@ class InputReader(private val path: String) {
     val rawLines = rawText.lines()
     val text = rawText.trim()
     val lines = text.lines()
-    fun lines() = text.lines()
 }
 
 interface AocSolution {
@@ -15,7 +14,7 @@ interface AocSolution {
 class DayZ(private val fileName: String) : AocSolution {
     override val description: String get() = "DayZ - test SolutionRunner DSL ($fileName)"
 
-    private val input = InputReader(fileName).lines()
+    private val input = InputReader(fileName).lines
 
     override fun part1(): String = "String1"
 

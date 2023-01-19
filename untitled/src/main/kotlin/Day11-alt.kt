@@ -1,7 +1,7 @@
 import java.math.BigInteger
 
-val sample = InputReader("Day11-sample.txt").lines()
-val input = InputReader("Day11-alt.txt").lines()
+val sample = InputReader("Day11-sample.txt").lines
+val input = InputReader("Day11-alt.txt").lines
 
 val monkeys = parse(input)
 val bigModulo: BigInteger = monkeys.map { it.modulo }.fold(BigInteger.ONE) { acc, prime -> acc.multiply(prime) }

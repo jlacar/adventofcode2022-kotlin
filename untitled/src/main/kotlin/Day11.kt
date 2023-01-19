@@ -3,7 +3,7 @@ typealias WorryFunction = (Long) -> Long
 class Day11(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 11 - Monkey in the Middle ($fileName)"
 
-    private val input = InputReader(fileName).lines()
+    private val input = InputReader(fileName).lines
 
     private fun monkeyTroop() = input.chunked(7).map { config -> Monkey.parse(config) }
 

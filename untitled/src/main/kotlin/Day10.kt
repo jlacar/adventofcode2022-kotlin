@@ -2,7 +2,7 @@ class Day10(private val fileName: String) : AocSolution
 {
     override val description: String get() = "Day 10 - Cathode-Ray Tube ($fileName)"
 
-    private val program = InputReader(fileName).lines()
+    private val program = InputReader(fileName).lines
 
     private val registerValues = mutableListOf(1).apply {
         program.forEach { line ->
