@@ -1,5 +1,4 @@
 class Day7(private val fileName: String) : AocSolution {
-
     override val description: String get() = "Day 7 - No Space Left on Device ($fileName)"
 
     private val root = parse(InputReader(fileName).lines)

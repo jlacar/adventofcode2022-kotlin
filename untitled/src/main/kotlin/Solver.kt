@@ -22,7 +22,7 @@ class DayZ(private val fileName: String) : AocSolution {
 
 class SolutionRunner(private val solution: AocSolution) {
     private fun message(expected: Any, actual: Any) = if (expected == actual)
-        "$actual ✅" else "❌ expected [$expected] but got [$actual]"
+        "✅ $actual" else "❌ expected [$expected] but got [$actual]"
 
     fun part1of(expected: Any) {
         message(expected, solution.part1()).also { result -> println("${solution.description} Part 1: $result") }

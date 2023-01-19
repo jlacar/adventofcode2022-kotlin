@@ -1,10 +1,6 @@
-class Day10(
-    private val fileName: String,
-    private val expected1: Int,
-    private val expected2: List<String>) : Solution
+class Day10(private val fileName: String) : AocSolution
 {
-    override val day: Int get() = 10
-    override val source: String get() = "$fileName"
+    override val description: String get() = "Day 10 - Cathode-Ray Tube ($fileName)"
 
     private val program = InputReader(fileName).lines()
 
@@ -19,9 +15,9 @@ class Day10(
 
     private val sampleCycles = (20..220 step 40).toList()
 
-    override fun part1() = Result(expected1, sampleSignalStrengths().sum())
+    override fun part1() = sampleSignalStrengths().sum()
 
-    override fun part2() = Result(expected2, crtDisplay())
+    override fun part2() = crtDisplay()
 
     fun crtDisplay(): List<String> {
         val crt = Array(6) { CharArray(40) { '.' } }
@@ -38,23 +34,28 @@ class Day10(
 }
 
 fun main() {
-    Solution.report(
-        Day10("Day10-sample.txt", 13140,
+    Day10("Day10-sample.txt") shouldHave {
+        part1of(13140)
+        part2of(
             """##..##..##..##..##..##..##..##..##..##..
               |###...###...###...###...###...###...###.
               |####....####....####....####....####....
               |#####.....#####.....#####.....#####.....
               |######......######......######......####
-              |#######.......#######.......#######.....""".trimMargin().lines()),
-
-        Day10("Day10.txt", 11960,
+              |#######.......#######.......#######.....""".trimMargin().lines()
+                .onEach(::println)
+        )
+    }
+    Day10("Day10.txt") shouldHave {
+        part1of(11960)
+        part2of( // EJCFPGLH
             """####...##..##..####.###...##..#....#..#.
               |#.......#.#..#.#....#..#.#..#.#....#..#.
               |###.....#.#....###..#..#.#....#....####.
               |#.......#.#....#....###..#.##.#....#..#.
               |#....#..#.#..#.#....#....#..#.#....#..#.
-              |####..##...##..#....#.....###.####.#..#.""".trimMargin().lines()).also {
-            it.crtDisplay().forEach(::println)  // EJCFPGLH
-        },
-    )
+              |####..##...##..#....#.....###.####.#..#.""".trimMargin().lines()
+                .onEach(::println)
+        )
+    }
 }
