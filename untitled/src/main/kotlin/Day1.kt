@@ -1,25 +1,12 @@
 class Day1(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 1"
 
-    private val input = InputReader(fileName).lines()
-    override fun part1() = calories(input, 1)
-    override fun part2() = calories(input, 3)
+    private val calories = InputReader(fileName).text
+        .split("\n\n")
+        .map { it.lines().sumOf { n -> n.toInt() } }
 
-    private fun calories(input: List<String>, n: Int): Int {
-        val cals: MutableList<Int> = mutableListOf()
-        val maxCals: MutableList<Int> = mutableListOf()
-        input.forEach { line ->
-            if (line.isNotBlank()) {
-                cals.add(line.toInt())
-            } else {
-                maxCals.add(cals.sumOf { it })
-                cals.clear()
-            }
-        }
-        maxCals.add(cals.sumOf { it })
-        maxCals.sortDescending()
-        return maxCals.subList(0, n).sum()
-    }
+    override fun part1() = calories.max()
+    override fun part2() = calories.sorted().takeLast(3).sum()
 }
 
 fun main() {
