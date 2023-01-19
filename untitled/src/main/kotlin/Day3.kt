@@ -1,14 +1,9 @@
-class Day3(
-    private val fileName: String,
-    private val expected1: Any,
-    private val expected2: Any) : Solution {
-
-    override val day get() = 3
-    override val source get() = "$fileName"
+class Day3(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 3 - Rucksack Reorg ($fileName)"
 
     private val input = InputReader(fileName).lines()
-    override fun part1() = Result(expected1, input.sumOf { ruckPriority(it) })
-    override fun part2() = Result(expected2, input.chunked(3).sumOf { groupBadgePriority(it) })
+    override fun part1() = input.sumOf { ruckPriority(it) }
+    override fun part2() = input.chunked(3).sumOf { groupBadgePriority(it) }
 }
 
 fun ruckPriority(line: String): Int {
@@ -36,3 +31,18 @@ private const val lowercase_a_priority = 1;
 private const val UPPERCASE_A_priority = 27;
 fun priority(ch: Char) = ch.lowercaseChar() - 'a' +
     if (ch.isLowerCase()) lowercase_a_priority else UPPERCASE_A_priority
+
+fun main() {
+    Day3("Day3-sample.txt") shouldHave {
+        part1of(157)
+        part2of(70)
+    }
+    Day3("Day3.txt") shouldHave {
+        part1of(7446)
+        part2of(2646)
+    }
+    Day3("Day3-alt.txt") shouldHave {
+        part1of(8349)
+        part2of(2681)
+    }
+}

@@ -28,10 +28,6 @@ interface Solution {
 fun main() {
     Solution.report(
 
-        Day3("Day3-sample.txt", 157, 70),
-        Day3("Day3.txt", 7446, 2646),
-        Day3("Day3-alt.txt", 8349, 2681),
-
         Day4("Day4-sample.txt", 2, 4),
         Day4("Day4.txt", 471, 888),
         Day4("Day4-alt.txt", 507, 897),
