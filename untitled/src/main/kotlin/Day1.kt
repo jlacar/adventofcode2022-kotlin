@@ -1,5 +1,5 @@
 class Day1(private val fileName: String) : AocSolution {
-    override val description: String get() = "Day 1"
+    override val description: String get() = "Day 1 - Calorie Counting ($fileName)"
 
     private val calories = InputReader(fileName).text
         .split("\n\n")
