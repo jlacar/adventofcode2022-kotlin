@@ -9,7 +9,7 @@ interface AocSolution {
 }
 
 class DayZ(private val fileName: String) : AocSolution {
-    override val description: String get() = "DayZ"
+    override val description: String get() = "DayZ - test SolutionRunner DSL ($fileName)"
 
     private val input = InputReader(fileName).lines()
 
@@ -40,6 +40,6 @@ infix fun AocSolution.shouldHave(fn: SolutionRunner.() -> Unit) {
 fun main() {
     DayZ("Day1.txt") shouldHave {
         part1of("String2")
-        part2of(500)
+        part2of(2255)
     }
 }

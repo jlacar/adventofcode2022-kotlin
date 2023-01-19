@@ -1,14 +1,9 @@
-class Day4(
-    private val fileName: String,
-    private val expected1: Any,
-    private val expected2: Any) : Solution {
-
-    override val day get() = 4
-    override val source get() = "$fileName"
+class Day4(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 4 - Camp Cleanup ($fileName)"
 
     private val input = InputReader(fileName).lines()
-    override fun part1() = Result(expected1, input.count { hasFullContainment(it) })
-    override fun part2() = Result(expected2, input.count { hasOverlap(it) })
+    override fun part1() = input.count { hasFullContainment(it) }
+    override fun part2() = input.count { hasOverlap(it) }
 }
 
 
@@ -38,4 +33,19 @@ class Section(specifier: String) {
         range.first <= other.range.last && range.last >= other.range.first
 
     override fun toString(): String = range.toString()
+}
+
+fun main() {
+    Day4("Day4-sample.txt") shouldHave {
+        part1of(2)
+        part2of(4)
+    }
+    Day4("Day4.txt") shouldHave {
+        part1of(471)
+        part2of(888)
+    }
+    Day4("Day4-alt.txt") shouldHave {
+        part1of(507)
+        part2of(897)
+    }
 }
