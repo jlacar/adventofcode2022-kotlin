@@ -31,8 +31,7 @@ fun main() {
 
 
 
-        Day6("Day6.txt", 1093, 3534),
-        Day6("Day6-alt.txt", 1155, 2789),
+
 
         Day7("Day7-sample.txt", 95437, 24933642),
         Day7("Day7.txt", 1118405, 12545514),
