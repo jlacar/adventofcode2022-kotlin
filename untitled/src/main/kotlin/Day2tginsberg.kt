@@ -6,29 +6,29 @@ class Day2tginsberg(private val fileName: String) : AocSolution {
 
     override fun part1() = score(
         mapOf(
-            "A X" to 1 + 3, // rock -> draw
-            "B X" to 1 + 0, // rock -> lose
-            "C X" to 1 + 6, // rock -> win
-            "A Y" to 2 + 6, // paper -> win
-            "B Y" to 2 + 3, // paper -> draw
-            "C Y" to 2 + 0, // paper -> lose
-            "A Z" to 3 + 0, // scissors -> lose
-            "B Z" to 3 + 6, // scissors -> win
-            "C Z" to 3 + 3, // scissors -> draw
+            "A X" to 1 + 3, // r vs R -> Draw
+            "B X" to 1 + 0, // p vs R -> Lose
+            "C X" to 1 + 6, // s vs R -> Win
+            "A Y" to 2 + 6, // r vs P -> W
+            "B Y" to 2 + 3, // p vs P -> D
+            "C Y" to 2 + 0, // s vs P -> L
+            "A Z" to 3 + 0, // r vs S -> L
+            "B Z" to 3 + 6, // p vs S -> W
+            "C Z" to 3 + 3, // s vs S -> D
         )
     )
 
     override fun part2() = score(
         mapOf(
-            "A X" to 0 + 3, // lose with scissors
-            "B X" to 0 + 1, // lose with rock
-            "C X" to 0 + 2, // lose with paper
-            "A Y" to 3 + 1, // draw with rock
-            "B Y" to 3 + 2, // draw with paper
-            "C Y" to 3 + 3, // draw with scissors
-            "A Z" to 6 + 2, // win with paper
-            "B Z" to 6 + 3, // win with scissors
-            "C Z" to 6 + 1, // win with rock
+            "A X" to 0 + 3, // (L) r vs Scissors
+            "B X" to 0 + 1, // (L) p vs Rock
+            "C X" to 0 + 2, // (L) s vs Paper
+            "A Y" to 3 + 1, // (D) r vs R
+            "B Y" to 3 + 2, // (D) p vs P
+            "C Y" to 3 + 3, // (D) s vs S
+            "A Z" to 6 + 2, // (W) r vs P
+            "B Z" to 6 + 3, // (W) p vs S
+            "C Z" to 6 + 1, // (W) s vs R
         )
     )
 
