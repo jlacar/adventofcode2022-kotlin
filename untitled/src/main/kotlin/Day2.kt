@@ -1,14 +1,9 @@
-class Day2(
-    private val fileName: String,
-    private val expected1: Int,
-    private val expected2: Int) : Solution {
-
-    override val day get() = 2
-    override val source get() = "$fileName"
+class Day2(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 2 - Rock Paper Scissors ($fileName)"
 
     private val input = InputReader(fileName).lines()
-    override fun part1() = Result(expected1, input.sumOf { rpsScore(it) })
-    override fun part2() = Result(expected2, input.sumOf { rpsStrategicScore(it) })
+    override fun part1() = input.sumOf { rpsScore(it) }
+    override fun part2() = input.sumOf { rpsStrategicScore(it) }
 }
 
 fun rpsScore(round: String): Int {
@@ -58,3 +53,18 @@ private fun resultWanted(strategy: String) =
         "Y" -> DRAW
         else -> WIN
     }
+
+fun main() {
+    Day2("Day2-sample.txt") shouldHave {
+        part1of(15)
+        part2of(12)
+    }
+    Day2("Day2.txt") shouldHave {
+        part1of(14264)
+        part2of(12382)
+    }
+    Day2("Day2-alt.txt") shouldHave {
+        part1of(13268)
+        part2of(15508)
+    }
+}

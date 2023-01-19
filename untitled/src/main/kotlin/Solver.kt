@@ -4,16 +4,12 @@ class InputReader(private val path: String) {
 
 interface AocSolution {
     val description: String get() = "?"
-    val source: String get() = "Pending"
     fun part1() : Any
     fun part2() : Any
 }
 
 class DayZ(private val fileName: String) : AocSolution {
-    override val description: String
-        get() = "DayZ"
-    override val source: String
-        get() = "$fileName"
+    override val description: String get() = "DayZ"
 
     private val input = InputReader(fileName).lines()
 
@@ -26,15 +22,12 @@ class SolutionRunner(private val solution: AocSolution) {
     private fun message(expected: Any, actual: Any) = if (expected == actual)
         "$actual ✅" else "❌ expected [$expected] but got [$actual]"
 
-    private val description: String
-        get() = "${solution.description} (${solution.source})"
-
     fun part1of(expected: Any) {
-        message(expected, solution.part1()).also { result -> println("$description Part 1: $result") }
+        message(expected, solution.part1()).also { result -> println("${solution.description} Part 1: $result") }
     }
 
     fun part2of(expected: Any) {
-        message(expected, solution.part2()).also { result -> println("$description Part 2: $result") }
+        message(expected, solution.part2()).also { result -> println("${solution.description} Part 2: $result") }
     }
 }
 

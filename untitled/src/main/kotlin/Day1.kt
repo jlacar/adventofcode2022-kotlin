@@ -1,6 +1,5 @@
 class Day1(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 1"
-    override val source get() = "$fileName"
 
     private val input = InputReader(fileName).lines()
     override fun part1() = calories(input, 1)
