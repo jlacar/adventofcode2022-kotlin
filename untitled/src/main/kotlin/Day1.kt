@@ -10,16 +10,16 @@ class Day1(private val fileName: String) : AocSolution {
 }
 
 fun main() {
-    Day1("Day1-sample.txt") shouldHave {
-        part1of(24000)
-        part2of(45000)
+    Day1("Day1-sample.txt") solution {
+        part1() shouldBe 24000
+        part2() shouldBe 45000
     }
-    Day1("Day1.txt") shouldHave {
-        part1of(71502)
-        part2of(208191)
+    Day1("Day1.txt") solution {
+        part1() shouldBe 71502
+        part2() shouldBe 208191
     }
-    Day1("Day1-alt.txt") shouldHave {
-        part1of(69836)
-        part2of(207968)
+    Day1("Day1-alt.txt") solution {
+        part1() shouldBe 69836
+        part2() shouldBe 207968
     }
 }

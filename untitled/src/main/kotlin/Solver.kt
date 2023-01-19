@@ -1,5 +1,7 @@
 class InputReader(private val path: String) {
-    val text = object {}.javaClass.getResource(path)!!.readText().trim()
+    val rawText = object {}.javaClass.getResource(path)!!.readText()
+    val rawLines = rawText.lines()
+    val text = rawText.trim()
     val lines = text.lines()
     fun lines() = text.lines()
 }
@@ -21,27 +23,24 @@ class DayZ(private val fileName: String) : AocSolution {
 }
 
 class SolutionRunner(private val solution: AocSolution) {
-    private fun message(expected: Any, actual: Any) = if (expected == actual)
-        "✅ $actual" else "❌ expected [$expected] but got [$actual]"
-
-    fun part1of(expected: Any) {
-        message(expected, solution.part1()).also { result -> println("${solution.description} Part 1: $result") }
-    }
-
-    fun part2of(expected: Any) {
-        message(expected, solution.part2()).also { result -> println("${solution.description} Part 2: $result") }
-    }
+    fun part1() = solution.part1().also { print("Part 1: ") }
+    fun part2() = solution.part2().also { print("Part 2: ") }
 }
 
-infix fun AocSolution.shouldHave(fn: SolutionRunner.() -> Unit) {
+infix fun Any.shouldBe(expected: Any) = println(
+    if (this == expected) "✅ $this" else "❌ expected [$expected] but got [$this]"
+)
+
+infix fun AocSolution.solution(fn: SolutionRunner.() -> Unit) {
     val runner = SolutionRunner(this)
+    println(this.description)
     runner.fn()
     println()
 }
 
 fun main() {
-    DayZ("Day1.txt") shouldHave {
-        part1of("String2")
-        part2of(2255)
+    DayZ("Day1.txt") solution {
+        part1() shouldBe "String2"
+        part2() shouldBe 2255
     }
 }

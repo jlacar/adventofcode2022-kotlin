@@ -33,16 +33,16 @@ fun priority(ch: Char) = ch.lowercaseChar() - 'a' +
     if (ch.isLowerCase()) lowercase_a_priority else UPPERCASE_A_priority
 
 fun main() {
-    Day3("Day3-sample.txt") shouldHave {
-        part1of(157)
-        part2of(70)
+    Day3("Day3-sample.txt") solution {
+        part1() shouldBe 157
+        part2() shouldBe 70
     }
-    Day3("Day3.txt") shouldHave {
-        part1of(7446)
-        part2of(2646)
+    Day3("Day3.txt") solution {
+        part1() shouldBe 7446
+        part2() shouldBe 2646
     }
-    Day3("Day3-alt.txt") shouldHave {
-        part1of(8349)
-        part2of(2681)
+    Day3("Day3-alt.txt") solution {
+        part1() shouldBe 8349
+        part2() shouldBe 2681
     }
 }

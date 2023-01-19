@@ -36,16 +36,16 @@ class Section(specifier: String) {
 }
 
 fun main() {
-    Day4("Day4-sample.txt") shouldHave {
-        part1of(2)
-        part2of(4)
+    Day4("Day4-sample.txt") solution {
+        part1() shouldBe 2
+        part2() shouldBe 4
     }
-    Day4("Day4.txt") shouldHave {
-        part1of(471)
-        part2of(888)
+    Day4("Day4.txt") solution {
+        part1() shouldBe 471
+        part2() shouldBe 888
     }
-    Day4("Day4-alt.txt") shouldHave {
-        part1of(507)
-        part2of(897)
+    Day4("Day4-alt.txt") solution {
+        part1() shouldBe 507
+        part2() shouldBe 897
     }
 }

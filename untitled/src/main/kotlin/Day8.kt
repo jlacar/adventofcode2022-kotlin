@@ -53,16 +53,16 @@ class Day8(private val fileName: String) : AocSolution {
 }
 
 fun main() {
-    Day8("Day8-sample.txt") shouldHave {
-        part1of(21)
-        part2of(8)
+    Day8("Day8-sample.txt") solution {
+        part1() shouldBe 21
+        part2() shouldBe 8
     }
-    Day8("Day8.txt") shouldHave {
-        part1of(1690)
-        part2of(535680)
+    Day8("Day8.txt") solution {
+        part1() shouldBe 1690
+        part2() shouldBe 535680
     }
-    Day8("Day8-alt.txt") shouldHave {
-        part1of(1698)
-        part2of(672280)
+    Day8("Day8-alt.txt") solution {
+        part1() shouldBe 1698
+        part2() shouldBe 672280
     }
 }

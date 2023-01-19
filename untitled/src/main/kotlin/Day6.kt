@@ -36,14 +36,14 @@ fun main() {
         "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" to 26,
     ))
 
-    Day6("Day6.txt") shouldHave {
-        part1of(1093)
-        part2of(3534)
+    Day6("Day6.txt") solution {
+        part1() shouldBe 1093
+        part2() shouldBe 3534
     }
 
-    Day6("Day6-alt.txt") shouldHave {
-        part1of(1155)
-        part2of(2789)
+    Day6("Day6-alt.txt") solution {
+        part1() shouldBe 1155
+        part2() shouldBe 2789
     }
 
 //  can we do this?

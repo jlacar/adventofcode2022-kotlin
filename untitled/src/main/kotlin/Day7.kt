@@ -53,16 +53,16 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
 }
 
 fun main() {
-    Day7("Day7-sample.txt") shouldHave {
-        part1of(95437)
-        part2of(24933642)
+    Day7("Day7-sample.txt") solution {
+        part1() shouldBe 95437
+        part2() shouldBe 24933642
     }
-    Day7("Day7.txt") shouldHave {
-        part1of(1118405)
-        part2of(12545514)
+    Day7("Day7.txt") solution {
+        part1() shouldBe 1118405
+        part2() shouldBe 12545514
     }
-    Day7("Day7-alt.txt") shouldHave {
-        part1of(1886043)
-        part2of(3842121)
+    Day7("Day7-alt.txt") solution {
+        part1() shouldBe 1886043
+        part2() shouldBe 3842121
     }
 }

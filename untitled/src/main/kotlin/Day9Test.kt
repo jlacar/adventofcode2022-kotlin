@@ -312,15 +312,15 @@ class Day9alt(private val fileName: String) : AocSolution {
 }
 
 fun main() {
-    Day9alt("Day9-sample.txt") shouldHave {
-        part1of(13)
+    Day9alt("Day9-sample.txt") solution {
+        part1() shouldBe 13
     }
-    Day9alt("Day9-sample2.txt") shouldHave {
-        part1of(88)
-        part2of(36)
+    Day9alt("Day9-sample2.txt") solution {
+        part1() shouldBe 88
+        part2() shouldBe 36
     }
-    Day9alt("Day9.txt") shouldHave {
-        part1of(6563)
-        part2of(2653)
+    Day9alt("Day9.txt") solution {
+        part1() shouldBe 6563
+        part2() shouldBe 2653
     }
 }

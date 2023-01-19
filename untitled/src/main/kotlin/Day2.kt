@@ -55,16 +55,16 @@ private fun resultWanted(strategy: String) =
     }
 
 fun main() {
-    Day2("Day2-sample.txt") shouldHave {
-        part1of(15)
-        part2of(12)
+    Day2("Day2-sample.txt") solution {
+        part1() shouldBe 15
+        part2() shouldBe 12
     }
-    Day2("Day2.txt") shouldHave {
-        part1of(14264)
-        part2of(12382)
+    Day2("Day2.txt") solution {
+        part1() shouldBe 14264
+        part2() shouldBe 12382
     }
-    Day2("Day2-alt.txt") shouldHave {
-        part1of(13268)
-        part2of(15508)
+    Day2("Day2-alt.txt") solution {
+        part1() shouldBe 13268
+        part2() shouldBe 15508
     }
 }

@@ -84,17 +84,17 @@ class Day11(private val fileName: String) : AocSolution {
 }
 
 fun main() {
-    Day11("Day11-sample.txt") shouldHave {
-        part1of(10605L)
-        part2of(2713310158L)
+    Day11("Day11-sample.txt") solution {
+        part1() shouldBe 10605L
+        part2() shouldBe 2713310158L
     }
-    Day11("Day11.txt") shouldHave {
-        part1of(111210L)
-        part2of(15447387620L)
+    Day11("Day11.txt") solution {
+        part1() shouldBe 111210L
+        part2() shouldBe 15447387620L
     }
-    Day11("Day11-alt.txt") shouldHave {
-        part1of(108240L)
-        part2of(25712998901L)
+    Day11("Day11-alt.txt") solution {
+        part1() shouldBe 108240L
+        part2() shouldBe 25712998901L
     }
 }
 
