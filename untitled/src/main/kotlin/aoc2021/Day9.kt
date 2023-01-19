@@ -1,4 +1,4 @@
-package event2021
+package aoc2021
 
 fun part1(input: List<String>) = 0
 

@@ -27,10 +27,6 @@ interface Solution {
 
 fun main() {
     Solution.report(
-        Day1("Day1-sample.txt", 24000, 45000),
-        Day1("Day1.txt", 71502, 208191),
-        Day1("Day1-alt.txt", 69836, 207968),
-
         Day2("Day2-sample.txt", 15, 12),
         Day2("Day2.txt", 14264, 12382),
         Day2("Day2-alt.txt", 13268, 15508),
@@ -61,6 +57,3 @@ fun main() {
 }
 
 
-class InputReader(private val fileName: String) {
-    fun lines() = this::class.java.getResourceAsStream(fileName).bufferedReader().readLines()
-}
