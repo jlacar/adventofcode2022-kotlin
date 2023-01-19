@@ -1,18 +1,14 @@
-class Day7  (
-    private val fileName: String,
-    private val expected1: Int,
-    private val expected2: Int) : Solution {
+class Day7(private val fileName: String) : AocSolution {
 
-    override val day get() = 7
-    override val source get() = "$fileName"
+    override val description: String get() = "Day 7 - No Space Left on Device ($fileName)"
 
-    private val root = parse(InputReader(fileName).lines())
+    private val root = parse(InputReader(fileName).lines)
 
-    override fun part1() = Result(expected1, smallDirectories().sumOf { it.size() })
+    override fun part1() = smallDirectories().sumOf { it.size() }
 
     private fun smallDirectories() = findDirs { it.size() <= 100_000 }
 
-    override fun part2() = Result(expected2, smallestDirectoryToDelete().size())
+    override fun part2() = smallestDirectoryToDelete().size()
 
     private fun smallestDirectoryToDelete() = spaceNeeded().let { minSize ->
         findDirs { it.size() >= minSize }.minBy { it.size() } }
@@ -54,5 +50,20 @@ data class FileAoC7 (val name: String, val bytes: Int, val isDirectory: Boolean 
 
     fun walkDirectories(action: (FileAoC7) -> Unit) {
         if (isDirectory) action.invoke(this).also { contents.forEach { it.walkDirectories(action) } }
+    }
+}
+
+fun main() {
+    Day7("Day7-sample.txt") shouldHave {
+        part1of(95437)
+        part2of(24933642)
+    }
+    Day7("Day7.txt") shouldHave {
+        part1of(1118405)
+        part2of(12545514)
+    }
+    Day7("Day7-alt.txt") shouldHave {
+        part1of(1886043)
+        part2of(3842121)
     }
 }

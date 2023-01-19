@@ -296,19 +296,14 @@ class Rope(knots: Int = 2) {
     }
 }
 
-class Day9alt(
-    private val fileName: String,
-    private val expected1: Int,
-    private val expected2: Int
-) : Solution {
-    override val day get() = 9
-    override val source get() = "$fileName"
+class Day9alt(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 9 - Rope Bridge ($fileName)"
 
-    private val allMoves = InputReader(fileName).lines()
+    private val allMoves = InputReader(fileName).lines
 
-    override fun part1() = Result(expected1, distinctPositionsVisitedByTail(Rope()))
+    override fun part1() = distinctPositionsVisitedByTail(Rope())
 
-    override fun part2() = Result(expected2, distinctPositionsVisitedByTail(Rope(10)))
+    override fun part2() = distinctPositionsVisitedByTail(Rope(10))
 
     private fun distinctPositionsVisitedByTail(rope: Rope): Int {
         rope.move(allMoves)
@@ -317,9 +312,15 @@ class Day9alt(
 }
 
 fun main() {
-    Solution.report(
-        Day9alt("Day9-sample.txt", 13, 1),
-        Day9alt("Day9-sample2.txt", 88, 36),
-        Day9alt("Day9.txt", 6563, 2653),
-    )
+    Day9alt("Day9-sample.txt") shouldHave {
+        part1of(13)
+    }
+    Day9alt("Day9-sample2.txt") shouldHave {
+        part1of(88)
+        part2of(36)
+    }
+    Day9alt("Day9.txt") shouldHave {
+        part1of(6563)
+        part2of(2653)
+    }
 }

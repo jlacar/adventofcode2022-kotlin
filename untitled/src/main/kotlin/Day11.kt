@@ -1,28 +1,23 @@
 typealias WorryFunction = (Long) -> Long
 
-class Day11(
-    private val fileName: String,
-    private val expected1: Long,
-    private val expected2: Long
-) : Solution {
-    override val day: Int get() = 11
-    override val source: String get() = "$fileName"
+class Day11(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 11 - Monkey in the Middle ($fileName)"
 
     private val input = InputReader(fileName).lines()
 
     private fun monkeyTroop() = input.chunked(7).map { config -> Monkey.parse(config) }
 
-    override fun part1(): Result {
+    override fun part1(): Long {
         val monkeys = monkeyTroop()
         monkeys.runRounds(20) { it / 3L }
-        return Result(expected1, monkeys.business())
+        return monkeys.business()
     }
 
-    override fun part2(): Result {
+    override fun part2(): Long {
         val monkeys = monkeyTroop()
         val divisorProduct = monkeys.map { it.divisor }.reduce(Long::times)
         monkeys.runRounds(10000) { it % divisorProduct }
-        return Result(expected2, monkeys.business() )
+        return monkeys.business()
     }
 
     private fun List<Monkey>.runRounds(rounds: Int, manageWorry: WorryFunction) {
@@ -89,11 +84,18 @@ class Day11(
 }
 
 fun main() {
-    Solution.report(
-        Day11("Day11-sample.txt", 10605L, 2713310158L),
-        Day11("Day11.txt", 111210L, 15447387620L),
-        Day11("Day11-alt.txt", 108240L, 25712998901L)
-    )
+    Day11("Day11-sample.txt") shouldHave {
+        part1of(10605L)
+        part2of(2713310158L)
+    }
+    Day11("Day11.txt") shouldHave {
+        part1of(111210L)
+        part2of(15447387620L)
+    }
+    Day11("Day11-alt.txt") shouldHave {
+        part1of(108240L)
+        part2of(25712998901L)
+    }
 }
 
 /*==================

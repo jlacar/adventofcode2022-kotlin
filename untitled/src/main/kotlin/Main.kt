@@ -25,22 +25,4 @@ interface Solution {
     }
 }
 
-fun main() {
-    Solution.report(
-
-
-
-
-
-
-        Day7("Day7-sample.txt", 95437, 24933642),
-        Day7("Day7.txt", 1118405, 12545514),
-        Day7("Day7-alt.txt", 1886043, 3842121),
-
-        Day8("Day8-sample.txt", 21, 8),
-        Day8("Day8.txt", 1690, 535680),
-        Day8("Day8-alt.txt", 1698, 672280),
-    )
-}
-
 

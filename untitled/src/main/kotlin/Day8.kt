@@ -1,16 +1,11 @@
-class Day8(
-    private val fileName: String,
-    private val expected1: Int,
-    private val expected2: Int) : Solution
-{
-    override val day get() = 8
-    override val source get() = "$fileName"
+class Day8(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 8 - Treetop Tree House ($fileName)"
 
-    override fun part1() = Result(expected1, visibleTrees())
+    override fun part1() = visibleTrees()
 
-    override fun part2() = Result(expected2, scenicScores().max())
+    override fun part2() = scenicScores().max()
 
-    private val forestRows = InputReader(fileName).lines().map { it.toCharArray() }
+    private val forestRows = InputReader(fileName).lines.map { it.toCharArray() }
     private val forestCols = forestRows[0].indices.map { i -> forestRows.map { it[i] }.toCharArray() }
 
     private fun visibleTrees() = perimeter() + visibleFromOutside()
@@ -58,9 +53,16 @@ class Day8(
 }
 
 fun main() {
-    Solution.report(
-        Day8("Day8-sample.txt", 21, 8),
-        Day8("Day8.txt", 1690, 535680),
-        Day8("Day8-alt.txt", 1698, 672280),
-    )
+    Day8("Day8-sample.txt") shouldHave {
+        part1of(21)
+        part2of(8)
+    }
+    Day8("Day8.txt") shouldHave {
+        part1of(1690)
+        part2of(535680)
+    }
+    Day8("Day8-alt.txt") shouldHave {
+        part1of(1698)
+        part2of(672280)
+    }
 }
