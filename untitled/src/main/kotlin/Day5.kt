@@ -1,15 +1,9 @@
-class Day5(
-    private val fileName: String,
-    private val expected1: String,
-    private val expected2: String) : Solution {
-
-    override val day get() = 5
-    override val source get() = "$fileName"
-
+class Day5(private val fileName: String) : AocSolution {
+    override val description: String get() = "Day 5 - Supply Stacks ($fileName)"
 
     private val input = InputReader(fileName).lines().filter { it.isNotBlank() }
-    override fun part1() = Result(expected1, Day5X(input).solve())
-    override fun part2() = Result(expected2, Day5X(input).solve2())
+    override fun part1() = Day5X(input).solve()
+    override fun part2() = Day5X(input).solve2()
 }
 
 class Day5X(val input: List<String> = """
@@ -73,12 +67,6 @@ class Day5X(val input: List<String> = """
     }
 }
 
-fun main() {
-    val day5 = Day5X()
-    println(day5.solve())
-    println(day5.solve2())
-}
-
 class Stack<E> {
     private val stack: ArrayDeque<E> = ArrayDeque()
     val height: Int get() = stack.size
@@ -95,5 +83,20 @@ class Stack<E> {
 
     override fun toString(): String {
         return stack.toString()
+    }
+}
+
+fun main() {
+    Day5("Day5-sample.txt") shouldHave {
+        part1of("CMZ")
+        part2of("MCD")
+    }
+    Day5("Day5.txt") shouldHave {
+        part1of("MQTPGLLDN")
+        part2of("LVZPSTTCZ")
+    }
+    Day5("Day5-alt.txt") shouldHave {
+        part1of("HBTMTBSDC")
+        part2of("PQTJRSHWS")
     }
 }

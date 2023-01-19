@@ -32,9 +32,7 @@ fun main() {
         Day4("Day4.txt", 471, 888),
         Day4("Day4-alt.txt", 507, 897),
 
-        Day5("Day5-sample.txt", "CMZ", "MCD"),
-        Day5("Day5.txt", "MQTPGLLDN", "LVZPSTTCZ"),
-        Day5("Day5-alt.txt", "HBTMTBSDC", "PQTJRSHWS"),
+
 
         Day6("Day6.txt", 1093, 3534),
         Day6("Day6-alt.txt", 1155, 2789),
