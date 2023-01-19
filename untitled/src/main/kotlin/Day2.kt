@@ -1,7 +1,7 @@
 class Day2(private val fileName: String) : AocSolution {
     override val description: String get() = "Day 2 - Rock Paper Scissors ($fileName)"
 
-    private val input = InputReader(fileName).lines()
+    private val input = InputReader(fileName).lines
     override fun part1() = input.sumOf { rpsScore(it) }
     override fun part2() = input.sumOf { rpsStrategicScore(it) }
 }

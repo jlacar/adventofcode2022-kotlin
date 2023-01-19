@@ -1,5 +1,6 @@
 class InputReader(private val path: String) {
     val text = object {}.javaClass.getResource(path)!!.readText().trim()
+    val lines = text.lines()
     fun lines() = text.lines()
 }
 
