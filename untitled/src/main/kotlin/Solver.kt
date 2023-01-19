@@ -31,10 +31,9 @@ infix fun Any.shouldBe(expected: Any) = println(
     if (this == expected) "✅ $this" else "❌ expected [$expected] but got [$this]"
 )
 
-infix fun AocSolution.solution(fn: SolutionRunner.() -> Unit) {
-    val runner = SolutionRunner(this)
+infix fun AocSolution.solution(invoke: SolutionRunner.() -> Unit) {
     println(this.description)
-    runner.fn()
+    SolutionRunner(this).invoke()
     println()
 }
 
