@@ -22,7 +22,7 @@ class DayZ(private val fileName: String) : AocSolution {
     override fun part2() = input.size
 }
 
-class SolutionRunner(private val solution: AocSolution) {
+class SolutionChecker(private val solution: AocSolution) {
     fun part1() = solution.part1().also { print("Part 1: ") }
     fun part2() = solution.part2().also { print("Part 2: ") }
 }
@@ -31,9 +31,9 @@ infix fun Any.shouldBe(expected: Any) = println(
     if (this == expected) "✅ $this" else "❌ expected [$expected] but got [$this]"
 )
 
-infix fun AocSolution.solution(invoke: SolutionRunner.() -> Unit) {
+infix fun AocSolution.solution(invoke: SolutionChecker.() -> Unit) {
     println(this.description)
-    SolutionRunner(this).invoke()
+    SolutionChecker(this).invoke()
     println()
 }
 
