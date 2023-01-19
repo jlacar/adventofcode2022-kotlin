@@ -1,5 +1,6 @@
 class InputReader(private val path: String) {
-    fun lines() = object {}.javaClass.getResource(path)?.readText()!!.lines()
+    val text = object {}.javaClass.getResource(path)!!.readText().trim()
+    fun lines() = text.lines()
 }
 
 interface AocSolution {
