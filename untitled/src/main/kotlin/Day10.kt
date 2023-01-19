@@ -19,13 +19,13 @@ class Day10(private val fileName: String) : AocSolution
 
     override fun part2() = crtDisplay()
 
-    private fun crtDisplay(): List<String> {
+    private fun crtDisplay(): String {
         val crt = Array(6) { CharArray(40) { '.' } }
-        registerValues.take(240).forEachIndexed { i, center ->
-            val pixel = i % 40
-            if (pixel in center-1..center+1) { crt[i/40][pixel] = '#' }
+        registerValues.take(240).forEachIndexed { offset, center ->
+            val pixel = offset % 40
+            if (pixel in center - 1..center + 1) { crt[offset / 40][pixel] = '#' }
         }
-        return crt.map { it.joinToString(separator="") }
+        return crt.joinToString("\n") { it.joinToString(separator = "") }
     }
 
     private fun sampleSignalStrengths(): List<Int> = registerValues.mapIndexed { i, x ->
@@ -42,8 +42,8 @@ fun main() {
               |####....####....####....####....####....
               |#####.....#####.....#####.....#####.....
               |######......######......######......####
-              |#######.......#######.......#######.....""".trimMargin().lines()
-                .onEach(::println)
+              |#######.......#######.......#######.....""".trimMargin()
+//                .also(::println)  // uncomment to display it
         )
     }
     Day10("Day10.txt") shouldHave {
@@ -54,8 +54,8 @@ fun main() {
               |###.....#.#....###..#..#.#....#....####.
               |#.......#.#....#....###..#.##.#....#..#.
               |#....#..#.#..#.#....#....#..#.#....#..#.
-              |####..##...##..#....#.....###.####.#..#.""".trimMargin().lines()
-                .onEach(::println)
+              |####..##...##..#....#.....###.####.#..#.""".trimMargin()
+//                .also(::println)  // uncomment to display it
         )
     }
 }
