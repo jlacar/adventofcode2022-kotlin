@@ -6,12 +6,12 @@ class Day10(private val fileName: String) : AocSolution
 
     private val registerValues = mutableListOf(1).apply {
         program.forEach { line ->
-            line.split(" ").let {
-                add(last())
-                if (it.size == 2) { add(last() + it[1].toInt()) }
+            add(last())
+            if (line.startsWith("addx")) {
+                add(last() + line.substringAfter(" ").toInt())
             }
-        }}.toList()
-
+        }
+    }.toList()
 
     private val sampleCycles = (20..220 step 40).toList()
 
